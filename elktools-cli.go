@@ -48,6 +48,11 @@ func main() {
 
 		}),
 		cli.BoolFlag{
+			Name:        "self-signed-certificate",
+			Usage:       "Disable the TLS certificate check",
+			Destination: &elktools_elasticsearch.DisableVerifySSL,
+		},
+		cli.BoolFlag{
 			Name:        "debug",
 			Usage:       "Display debug output",
 		},
@@ -105,6 +110,29 @@ func main() {
 				},
 			},
 			Action: elktools_elasticsearch.SaveAllILMPolicies,
+		},
+		{
+			Name:  "create-or-update-all-lifecycle-policies",
+			Usage: "Create or update all lifecycle policies from folder provided",
+			Flags: []cli.Flag{
+			    cli.StringFlag{
+					Name:  "lifecycle-policy-base-path",
+					Usage: "The base path to load all lifecycle policy",
+					Value: "lifecycle_policy",
+				},
+			},
+			Action: elktools_elasticsearch.CreateAllILMPolicies,
+		},
+		{
+			Name:  "get-lifecycle-policy-status",
+			Usage: "Get the lifecycle policy on Elasticsearch index",
+			Flags: []cli.Flag{
+			    cli.StringFlag{
+					Name:  "elasticsearch-index",
+					Usage: "The Elasticsearch index where you should to get lifecycle policy status",
+				},
+			},
+			Action: elktools_elasticsearch.GetStatusIlmPolicy,
 		},
 	}
 

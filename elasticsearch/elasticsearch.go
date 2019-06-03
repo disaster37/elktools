@@ -5,6 +5,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/elastic/go-elasticsearch"
 	"strings"
+	"net/http"
+	"crypto/tls"
 
 )
 
@@ -12,6 +14,7 @@ var (
     ElasticsearchUrl string
     User string
     Password string
+    DisableVerifySSL bool
 )
 
 // Check the global parameter
@@ -25,6 +28,7 @@ func manageElasticsearchGlobalParameters() (*elasticsearch.Client, error) {
     log.Debug("Elasticsearch URL: ", ElasticsearchUrl)
     log.Debug("Elasticsearch user: ", User)
     log.Debug("Elasticsearch password: XXX")
+    log.Debug("Disable verify SSL: ", DisableVerifySSL)
     
     
    // Init es client
@@ -34,6 +38,14 @@ func manageElasticsearchGlobalParameters() (*elasticsearch.Client, error) {
        Username: User,
        Password: Password,
    }
+   if DisableVerifySSL == true {
+       cfg.Transport = &http.Transport{
+           TLSClientConfig: &tls.Config{
+            InsecureSkipVerify: true,
+           },
+       }
+   }
+   
    es, err := elasticsearch.NewClient(cfg)
    if err != nil {
        return nil, err

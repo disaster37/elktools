@@ -47,8 +47,8 @@ func ListFilesInPath(path string, extention string) ([]string, error) {
 	})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return files
+	return files, nil
 }

@@ -8,6 +8,8 @@ import (
 	"gopkg.in/urfave/cli.v1"
 	"io/ioutil"
 	"strings"
+	"github.com/pkg/errors"
+	"github.com/elastic/go-elasticsearch"
 )
 
 // CreateILMPolicy permit to create or update Lifecycle policy
@@ -29,14 +31,16 @@ func CreateILMPolicy(c *cli.Context) error {
 		return cli.NewExitError("You must set lifecycle-policy-file parameter", 1)
 	}
 
-	err := createILMPolicy(lifecyclePolicyID, lifecyclePolicyFile)
+	err = createILMPolicy(lifecyclePolicyID, lifecyclePolicyFile, es)
 	if err != nil {
 		return err
 	}
+	
+	return nil
 }
 
 // createILMPolicy permit to create or update lifecycle policy on Elasticsearch from file
-func createILMPolicy(id string, file string) error {
+func createILMPolicy(id string, file string, es *elasticsearch.Client) error {
 
 	if id == "" {
 		errors.New("You must provide id")
@@ -70,7 +74,7 @@ func createILMPolicy(id string, file string) error {
 	defer res.Body.Close()
 
 	if res.IsError() {
-		return errors.New(fmt.Sprintf("Error when add lifecycle policy %s: %s", lifecyclePolicyID, res.String()))
+	    errors.Errorf("Error when add lifecycle policy %s: %s", id, res.String())
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -259,10 +263,10 @@ func CreateAllILMPolicies(c *cli.Context) error {
 		// Extract the policy name from the file name
 		match, err := helper.ExtractFromRegex("([^\\/]+)\\.json$", file)
 		if match == nil {
-			return errors.New("Can't extract the lifecycle policy id from the file %s", file)
+			return errors.Errorf("Can't extract the lifecycle policy id from the file %s", file)
 		}
 
-		err = createILMPolicy(match[1], file)
+		err = createILMPolicy(match[1], file, es)
 		if err != nil {
 			return err
 		}
@@ -271,4 +275,44 @@ func CreateAllILMPolicies(c *cli.Context) error {
 
 	return nil
 
+}
+
+
+// GetStatusIlmPolicy permit to get the current status of lifecycle policy on given index
+func GetStatusIlmPolicy(c *cli.Context) error {
+    es, err := manageElasticsearchGlobalParameters()
+	if err != nil {
+		return err
+	}
+
+	elasticsearchIndex := c.String("elasticsearch-index")
+
+	if elasticsearchIndex == "" {
+		return errors.New("You must set elasticsearch-index")
+	}
+
+	log.Debugf("Elasticsearch index: %s", elasticsearchIndex)
+	
+	res, err := es.Ilm.ExplainLifecycle(
+	   es.Ilm.ExplainLifecycle.WithContext(context.Background()),
+	   es.Ilm.ExplainLifecycle.WithPretty(),
+	   es.Ilm.ExplainLifecycle.WithIndex(elasticsearchIndex),	   
+	)
+	
+	defer res.Body.Close()
+
+	if res.IsError() {
+	    errors.Errorf("Error when get lifecycle policy status on index %s: %s", elasticsearchIndex, res.String())
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	log.Infof("Lifecycle policy status on index %s:\n%s", elasticsearchIndex, body)
+	
+	if err != nil {
+	    return err
+	}
+	
+	return nil
 }
