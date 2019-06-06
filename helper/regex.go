@@ -5,6 +5,9 @@ import (
 	"regexp"
 )
 
+// ExtractFromRegex permet to extract some substring from regex
+// It return error if regex syntaxe is bad
+// It return nil if regex not match
 func ExtractFromRegex(regex string, data string) ([]string, error) {
 	if regex == "" {
 		return nil, errors.New("regex must be provied")

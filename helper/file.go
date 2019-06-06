@@ -7,7 +7,8 @@ import (
 	"path/filepath"
 )
 
-// Permit to write file
+// WriteFile permit to write the content in file
+// It return error if something wrong when write file
 func WriteFile(path string, content []byte) error {
 
 	if path == "" {
@@ -32,6 +33,10 @@ func WriteFile(path string, content []byte) error {
 	return nil
 }
 
+// ListFilesInPath permtit to list all file in provided path that match the extension
+// It return error if somethink wrong when it list the file on path
+// It return a list of full path.
+// It return empty list if it doesn't found file
 func ListFilesInPath(path string, extention string) ([]string, error) {
 	if path == "" {
 		errors.New("Path can't be empty")
