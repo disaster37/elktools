@@ -31,26 +31,28 @@ func CreateILMPolicy(c *cli.Context) error {
 		return errors.New("You must set lifecycle-policy-file parameter")
 	}
 
-	err = createILMPolicy(lifecyclePolicyID, lifecyclePolicyFile, es)
+	body, err := createILMPolicy(lifecyclePolicyID, lifecyclePolicyFile, es)
 	if err != nil {
 		return err
 	}
+
+	log.Infof("Add life cycle policy %s successfully:\n%s", lifecyclePolicyID, body)
 
 	return nil
 }
 
 // createILMPolicy permit to create or update lifecycle policy on Elasticsearch from file
-func createILMPolicy(id string, file string, es *elasticsearch.Client) error {
+func createILMPolicy(id string, file string, es *elasticsearch.Client) (string, error) {
 
 	if id == "" {
-		errors.New("You must provide id")
+		return "", errors.New("You must provide id")
 	}
 	if file == "" {
-		return errors.New("You must provide file")
+		return "", errors.New("You must provide file")
 	}
 
 	if es == nil {
-		return errors.New("You must provide es client")
+		return "", errors.New("You must provide es client")
 	}
 
 	log.Debug("ID: ", id)
@@ -59,7 +61,7 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) error {
 	// Read the policy file
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
-		return err
+		return "", err
 	}
 	policyJson := string(b)
 	log.Debug("Policy: ", policyJson)
@@ -72,21 +74,20 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) error {
 	)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	defer res.Body.Close()
 
 	if res.IsError() {
-		errors.Errorf("Error when add lifecycle policy %s: %s", id, res.String())
+		return "", errors.Errorf("Error when add lifecycle policy %s: %s", id, res.String())
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return "", err
 	}
-	log.Infof("Add life cycle policy %s successfully:\n%s", id, body)
 
-	return nil
+	return string(body), nil
 }
 
 // SaveILMPolicy permit to get and write existing lifecycle policy on file
@@ -110,26 +111,28 @@ func SaveILMPolicy(c *cli.Context) error {
 	log.Debug("Lifecycle policy ID: ", lifecyclePolicyID)
 	log.Debug("Lifecycle policy file: ", lifecyclePolicyFile)
 
-	err = saveIlmPolicy(lifecyclePolicyID, lifecyclePolicyFile, es)
+	_, err = saveIlmPolicy(lifecyclePolicyID, lifecyclePolicyFile, es)
 	if err != nil {
 		return err
 	}
+
+	log.Infof("Write life cycle policy %s successfully on file %s", lifecyclePolicyID, lifecyclePolicyFile)
 
 	return nil
 }
 
 // saveIlmPolicy permit to get lifecycle policy from elasticsearch and save it on file
-func saveIlmPolicy(id string, file string, es *elasticsearch.Client) error {
+func saveIlmPolicy(id string, file string, es *elasticsearch.Client) (string, error) {
 
 	if id == "" {
-		errors.New("You must provide id")
+		return "", errors.New("You must provide id")
 	}
 	if file == "" {
-		return errors.New("You must provide file")
+		return "", errors.New("You must provide file")
 	}
 
 	if es == nil {
-		return errors.New("You must provide es client")
+		return "", errors.New("You must provide es client")
 	}
 
 	log.Debug("ID: ", id)
@@ -142,27 +145,25 @@ func saveIlmPolicy(id string, file string, es *elasticsearch.Client) error {
 		es.Ilm.GetLifecycle.WithPolicy(id),
 	)
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer res.Body.Close()
 	if res.IsError() {
-		return errors.Errorf("Error when get lifecycle policy %s: %s", id, res.String())
+		return "", errors.Errorf("Error when get lifecycle policy %s: %s", id, res.String())
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return "", err
 	}
 	log.Debugf("Get life cycle policy %s successfully:\n%s", id, body)
 
 	// Write contend to file
 	err = helper.WriteFile(file, body)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	log.Infof("Write life cycle policy %s successfully on file %s", id, file)
-
-	return nil
+	return string(body), nil
 
 }
 
@@ -178,33 +179,56 @@ func DeleteILMPolicy(c *cli.Context) error {
 	lifecyclePolicyID := c.String("lifecycle-policy-id")
 
 	if lifecyclePolicyID == "" {
-		return cli.NewExitError("You must set lifecycle-policy-id", 1)
+		return errors.New("You must set lifecycle-policy-id")
 	}
 
 	log.Debug("Lifecycle policy ID: ", lifecyclePolicyID)
 
+	body, err := deleteILMPolicy(lifecyclePolicyID, es)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Delete life cycle policy %s successfully:\n%s", lifecyclePolicyID, body)
+
+	return nil
+}
+
+// deleteILMPolicy permit to delete the given lifecycle policy in Elasticsearch
+func deleteILMPolicy(id string, es *elasticsearch.Client) (string, error) {
+
+	if id == "" {
+		return "", errors.New("You must provide id")
+	}
+
+	if es == nil {
+		return "", errors.New("You must provide es client")
+	}
+
+	log.Debug("ID: ", id)
+
 	res, err := es.Ilm.DeleteLifecycle(
 		es.Ilm.DeleteLifecycle.WithContext(context.Background()),
 		es.Ilm.DeleteLifecycle.WithPretty(),
-		es.Ilm.DeleteLifecycle.WithPolicy(lifecyclePolicyID),
+		es.Ilm.DeleteLifecycle.WithPolicy(id),
 	)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	defer res.Body.Close()
 
 	if res.IsError() {
-		return cli.NewExitError(fmt.Sprintf("Error when delete lifecycle policy %s: %s", lifecyclePolicyID, res.String()), 1)
+		return "", errors.Errorf("Error when delete lifecycle policy %s: %s", id, res.String())
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return "", err
 	}
-	log.Infof("Delete life cycle policy %s successfully:\n%s", lifecyclePolicyID, body)
 
-	return nil
+	return string(body), nil
+
 }
 
 // SaveAllILMPolices permit to save all lifecycle policy
@@ -218,10 +242,29 @@ func SaveAllILMPolicies(c *cli.Context) error {
 	lifecyclePolicyBasePath := c.String("lifecycle-policy-base-path")
 
 	if lifecyclePolicyBasePath == "" {
-		return cli.NewExitError("You must set lifecycle-policy-base-path", 1)
+		return errors.New("You must set lifecycle-policy-base-path")
 	}
 
 	log.Debug("Lifecycle policy base path: ", lifecyclePolicyBasePath)
+
+	r, err := saveAllILMPolicies(lifecyclePolicyBasePath, es)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Save %d lifecycle policies on %s", len(r), lifecyclePolicyBasePath)
+
+	return nil
+}
+
+func saveAllILMPolicies(path string, es *elasticsearch.Client) (map[string]interface{}, error) {
+	if path == "" {
+		return nil, errors.New("You must set path")
+	}
+
+	if es == nil {
+		return nil, errors.New("You must set es")
+	}
 
 	// Read the policy from API
 	res, err := es.Ilm.GetLifecycle(
@@ -229,22 +272,22 @@ func SaveAllILMPolicies(c *cli.Context) error {
 		es.Ilm.GetLifecycle.WithPretty(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.IsError() {
-		return cli.NewExitError(fmt.Sprintf("Error when get all lifecycle policies: %s", res.String()), 1)
+		return nil, errors.Errorf("Error when get all lifecycle policies: %s", res.String())
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	log.Debugf("Get all life cycle policies successfully:\n%s", body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var r map[string]interface{}
 	err = helper.BytesToJson(body, &r)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for name, lifeCyclePolicy := range r {
@@ -253,17 +296,18 @@ func SaveAllILMPolicies(c *cli.Context) error {
 
 		data, err := helper.JsonToBytes(lifeCyclePolicy)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		err = helper.WriteFile(fmt.Sprintf("%s/%s.json", lifecyclePolicyBasePath, name), data)
+		err = helper.WriteFile(fmt.Sprintf("%s/%s.json", path, name), data)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		log.Infof("Save lifecycle policy %s on %s successfully", name, fmt.Sprintf("%s/%s.json", lifecyclePolicyBasePath, name))
+		log.Infof("Save lifecycle policy %s on %s/%s.json successfully", name, path, name)
 	}
 
-	return nil
+	return r, nil
+
 }
 
 // CreateAllILMPolices permit to create all lifecycle policies
@@ -277,15 +321,35 @@ func CreateAllILMPolicies(c *cli.Context) error {
 	lifecyclePolicyBasePath := c.String("lifecycle-policy-base-path")
 
 	if lifecyclePolicyBasePath == "" {
-		return cli.NewExitError("You must set lifecycle-policy-base-path", 1)
+		return errors.New("You must set lifecycle-policy-base-path")
 	}
 
 	log.Debug("Lifecycle policy base path: ", lifecyclePolicyBasePath)
 
-	// Read lifecycle policy from file and create it on Elasticsearch
-	files, err := helper.ListFilesInPath(lifecyclePolicyBasePath, ".json")
+	listFiles, err := createAllILMPolicies(lifecyclePolicyBasePath, es)
 	if err != nil {
 		return err
+	}
+
+	log.Infof("Create %d policies from %s", len(listFiles), lifecyclePolicyBasePath)
+
+	return nil
+
+}
+
+func createAllILMPolicies(path string, es *elasticsearch.Client) ([]string, error) {
+	if path == "" {
+		return nil, errors.New("You must set path")
+	}
+
+	if es == nil {
+		return nil, errors.New("You must set es")
+	}
+
+	// Read lifecycle policy from file and create it on Elasticsearch
+	files, err := helper.ListFilesInPath(path, ".json")
+	if err != nil {
+		return nil, err
 	}
 
 	for _, file := range files {
@@ -293,17 +357,19 @@ func CreateAllILMPolicies(c *cli.Context) error {
 		// Extract the policy name from the file name
 		match, err := helper.ExtractFromRegex("([^\\/]+)\\.json$", file)
 		if match == nil {
-			return errors.Errorf("Can't extract the lifecycle policy id from the file %s", file)
+			return nil, errors.Errorf("Can't extract the lifecycle policy id from the file %s", file)
 		}
 
-		err = createILMPolicy(match[1], file, es)
+		body, err := createILMPolicy(match[1], file, es)
 		if err != nil {
-			return err
+			return nil, err
 		}
+
+		log.Infof("Add life cycle policy %s successfully:\n%s", match[1], body)
 
 	}
 
-	return nil
+	return files, nil
 
 }
 

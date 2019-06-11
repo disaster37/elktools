@@ -22,6 +22,8 @@ func JsonToBytes(data interface{}) ([]byte, error) {
 }
 
 // BytesToJson permit to convert bytes to Json struct
+// It return error if somthing wrong when it convert json to struct
+// It add struct on convertedData interface.
 func BytesToJson(data []byte, convertedData interface{}) error {
 	log.Debugf("Data: %s", data)
 
