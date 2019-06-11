@@ -257,6 +257,8 @@ func SaveAllILMPolicies(c *cli.Context) error {
 	return nil
 }
 
+// saveAllILMPolicies permit to save on files all ILM policies
+// It return le list of ILM policies as map of strings
 func saveAllILMPolicies(path string, es *elasticsearch.Client) (map[string]interface{}, error) {
 	if path == "" {
 		return nil, errors.New("You must set path")
@@ -337,6 +339,8 @@ func CreateAllILMPolicies(c *cli.Context) error {
 
 }
 
+// createAllILMPolicies permit to create all ilm policies found on the given path
+// It return the list of policies files that it found
 func createAllILMPolicies(path string, es *elasticsearch.Client) ([]string, error) {
 	if path == "" {
 		return nil, errors.New("You must set path")
@@ -374,7 +378,7 @@ func createAllILMPolicies(path string, es *elasticsearch.Client) ([]string, erro
 }
 
 // GetStatusIlmPolicy permit to get the current status of lifecycle policy on given index
-func GetStatusIlmPolicy(c *cli.Context) error {
+func GetStatusILMPolicy(c *cli.Context) error {
 	es, err := manageElasticsearchGlobalParameters()
 	if err != nil {
 		return err
@@ -388,26 +392,41 @@ func GetStatusIlmPolicy(c *cli.Context) error {
 
 	log.Debugf("Elasticsearch index: %s", elasticsearchIndex)
 
+	body, err := getStatusILMPOlicy(elasticsearchIndex, es)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Lifecycle policy status on index %s:\n%s", elasticsearchIndex, body)
+	return nil
+}
+
+// getSatusILMPolicy permit to explain the ILM policies apply on the given index
+func getStatusILMPOlicy(index string, es *elasticsearch.Client) (string, error) {
+	if index == "" {
+		return "", errors.New("You must set index")
+	}
+
+	if es == nil {
+		return "", errors.New("You must set es")
+	}
+
 	res, err := es.Ilm.ExplainLifecycle(
 		es.Ilm.ExplainLifecycle.WithContext(context.Background()),
 		es.Ilm.ExplainLifecycle.WithPretty(),
-		es.Ilm.ExplainLifecycle.WithIndex(elasticsearchIndex),
+		es.Ilm.ExplainLifecycle.WithIndex(index),
 	)
 
 	defer res.Body.Close()
 
 	if res.IsError() {
-		errors.Errorf("Error when get lifecycle policy status on index %s: %s", elasticsearchIndex, res.String())
+		return "", errors.Errorf("Error when get lifecycle policy status on index %s: %s", index, res.String())
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err
-	}
-	log.Infof("Lifecycle policy status on index %s:\n%s", elasticsearchIndex, body)
-
-	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return string(body), nil
+
 }

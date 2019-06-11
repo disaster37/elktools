@@ -9,7 +9,6 @@ import (
 	"os"
 )
 
-
 func main() {
 
 	// Logger setting
@@ -44,8 +43,7 @@ func main() {
 			Name:        "elasticsearch-password",
 			Usage:       "The Elasticsearch password",
 			EnvVar:      "ELASTICSEARCH_PASSWORD",
-            Destination: &elktools_elasticsearch.Password,
-
+			Destination: &elktools_elasticsearch.Password,
 		}),
 		cli.BoolFlag{
 			Name:        "self-signed-certificate",
@@ -53,8 +51,8 @@ func main() {
 			Destination: &elktools_elasticsearch.DisableVerifySSL,
 		},
 		cli.BoolFlag{
-			Name:        "debug",
-			Usage:       "Display debug output",
+			Name:  "debug",
+			Usage: "Display debug output",
 		},
 	}
 	app.Commands = []cli.Command{
@@ -62,7 +60,7 @@ func main() {
 			Name:  "create-or-update-lifecycle-policy",
 			Usage: "Create or update lifecycle policy",
 			Flags: []cli.Flag{
-			    cli.StringFlag{
+				cli.StringFlag{
 					Name:  "lifecycle-policy-id",
 					Usage: "The lifecycle policy name",
 				},
@@ -77,7 +75,7 @@ func main() {
 			Name:  "save-lifecycle-policy",
 			Usage: "Save lifecycle policy on file",
 			Flags: []cli.Flag{
-			    cli.StringFlag{
+				cli.StringFlag{
 					Name:  "lifecycle-policy-id",
 					Usage: "The lifecycle policy name",
 				},
@@ -92,7 +90,7 @@ func main() {
 			Name:  "delete-lifecycle-policy",
 			Usage: "Delete lifecycle policy",
 			Flags: []cli.Flag{
-			    cli.StringFlag{
+				cli.StringFlag{
 					Name:  "lifecycle-policy-id",
 					Usage: "The lifecycle policy name",
 				},
@@ -103,7 +101,7 @@ func main() {
 			Name:  "save-all-lifecycle-policies",
 			Usage: "Save all lifecycle policies on folder provided",
 			Flags: []cli.Flag{
-			    cli.StringFlag{
+				cli.StringFlag{
 					Name:  "lifecycle-policy-base-path",
 					Usage: "The base path to save all lifecycle policy",
 					Value: "lifecycle_policy",
@@ -115,7 +113,7 @@ func main() {
 			Name:  "create-or-update-all-lifecycle-policies",
 			Usage: "Create or update all lifecycle policies from folder provided",
 			Flags: []cli.Flag{
-			    cli.StringFlag{
+				cli.StringFlag{
 					Name:  "lifecycle-policy-base-path",
 					Usage: "The base path to load all lifecycle policy",
 					Value: "lifecycle_policy",
@@ -127,21 +125,21 @@ func main() {
 			Name:  "get-lifecycle-policy-status",
 			Usage: "Get the lifecycle policy on Elasticsearch index",
 			Flags: []cli.Flag{
-			    cli.StringFlag{
+				cli.StringFlag{
 					Name:  "elasticsearch-index",
 					Usage: "The Elasticsearch index where you should to get lifecycle policy status",
 				},
 			},
-			Action: elktools_elasticsearch.GetStatusIlmPolicy,
+			Action: elktools_elasticsearch.GetStatusILMPolicy,
 		},
 	}
 
 	app.Before = func(c *cli.Context) error {
-	    
-	    if c.Bool("debug") {
-	        log.SetLevel(log.DebugLevel)
-	    }
-	    
+
+		if c.Bool("debug") {
+			log.SetLevel(log.DebugLevel)
+		}
+
 		if c.String("config") != "" {
 			before := altsrc.InitInputSourceWithContext(app.Flags, altsrc.NewYamlSourceFromFlagFunc("config"))
 			return before(c)
@@ -154,5 +152,3 @@ func main() {
 		log.Fatal(err)
 	}
 }
-
-

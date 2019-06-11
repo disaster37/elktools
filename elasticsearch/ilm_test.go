@@ -1,7 +1,10 @@
 package elktools_elasticsearch
 
 import (
+	"context"
+	"github.com/elastic/go-elasticsearch/esapi"
 	"github.com/stretchr/testify/assert"
+	"strings"
 )
 
 func (s *ESTestSuite) TestCreateSaveDeleteIlmPolicy() {
@@ -22,7 +25,26 @@ func (s *ESTestSuite) TestCreateSaveDeleteIlmPolicy() {
 	_, err = saveAllILMPolicies("/tmp", s.client)
 	assert.NoError(s.T(), err)
 
+	// Get the ILM status
+	req := &esapi.IndicesCreateRequest{
+		Index: "test",
+		Body:  strings.NewReader(`{"settings": {"index.lifecycle.name": "test"}}`),
+	}
+	_, err = req.Do(context.Background(), s.client)
+	if err != nil {
+		panic(err)
+	}
+	_, err = getStatusILMPOlicy("test", s.client)
+	assert.NoError(s.T(), err)
+
 	// Delete ILM policy
+	req2 := &esapi.IndicesDeleteRequest{
+		Index: []string{"test"},
+	}
+	_, err = req2.Do(context.Background(), s.client)
+	if err != nil {
+		panic(err)
+	}
 	_, err = deleteILMPolicy("test", s.client)
 	assert.NoError(s.T(), err)
 
