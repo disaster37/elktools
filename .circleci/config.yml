@@ -62,6 +62,7 @@ workflows:
             tags:
               only: /.*/
       - release:
+          context: Github
           requires:
             - build
           filters:
