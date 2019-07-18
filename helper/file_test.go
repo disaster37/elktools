@@ -18,8 +18,8 @@ func TestWriteFile(t *testing.T) {
 
 func TestListFilesInPath(t *testing.T) {
 
-	res, err := ListFilesInPath("../fixtures", ".json")
+	res, err := ListFilesInPath("../fixtures/ilm", ".json")
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
-	assert.Contains(t, res, "../fixtures/ilm.json")
+	assert.Contains(t, res, "../fixtures/ilm/ilm.json")
 }

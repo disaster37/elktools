@@ -6,6 +6,7 @@ services:
       cluster.name: test
       discovery.type: single-node
       ELASTIC_PASSWORD: changeme
+  
   test:
     image: golang:1.11
     working_dir: /go/src/github.com/disaster37/elktools
@@ -18,6 +19,9 @@ services:
   build:
     image: golang:1.11
     working_dir: /go/src/github.com/disaster37/elktools
+    environment:
+      http_proxy: $http_proxy
+      https_proxy: $https_proxy
     volumes:
       - .:/go/src/github.com/disaster37/elktools
     command: "bash -c \"go get github.com/mitchellh/gox && gox -osarch='linux/amd64' -output 'release/elktools_{{.OS}}_{{.Arch}}'\""
@@ -28,5 +32,10 @@ services:
       - .:/workspace
     working_dir: /workspace
     entrypoint: "/workspace/release/elktools_linux_amd64"
+    links:
+      - elasticsearch:es
+  
+  curl:
+    image: appropriate/curl:latest
     links:
       - elasticsearch:es

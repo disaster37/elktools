@@ -10,11 +10,11 @@ import (
 func (s *ESTestSuite) TestCreateSaveDeleteIlmPolicy() {
 
 	// Create ILM policy
-	_, err := createILMPolicy("test", "../fixtures/ilm.json", s.client)
+	_, err := createILMPolicy("test", "../fixtures/ilm/ilm.json", s.client)
 	assert.NoError(s.T(), err)
 
 	// Create all ILM policies
-	_, err = createAllILMPolicies("../fixtures", s.client)
+	_, err = createAllILMPolicies("../fixtures/ilm", s.client)
 	assert.NoError(s.T(), err)
 
 	// Save ILM policy

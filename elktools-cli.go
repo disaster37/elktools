@@ -132,6 +132,73 @@ func main() {
 			},
 			Action: elktools_elasticsearch.GetStatusILMPolicy,
 		},
+		{
+			Name:  "create-or-update-indice-template",
+			Usage: "Create or update indice template",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "indice-template-id",
+					Usage: "The indice template name",
+				},
+				cli.StringFlag{
+					Name:  "indice-template-file",
+					Usage: "The full path of indice template file",
+				},
+			},
+			Action: elktools_elasticsearch.CreateIndiceTemplate,
+		},
+		{
+			Name:  "create-or-update-all-indice-templates",
+			Usage: "Create or update all indice templates",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "indice-template-path",
+					Usage: "The indice templates base path",
+				},
+			},
+			Action: elktools_elasticsearch.CreateAllIndiceTemplates,
+		},
+		{
+			Name:  "delete-indice-template",
+			Usage: "Delete indice template",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "indice-template-id",
+					Usage: "The indice template ID to delete",
+				},
+			},
+			Action: elktools_elasticsearch.DeleteIndiceTemplate,
+		},
+		{
+			Name:  "save-indice-template",
+			Usage: "Save indice template on file",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "indice-template-id",
+					Usage: "The indice template ID to save",
+				},
+				cli.StringFlag{
+					Name:  "indice-template-file",
+					Usage: "The indice template file to store it",
+				},
+			},
+			Action: elktools_elasticsearch.SaveIndiceTemplate,
+		},
+		{
+			Name:  "create-indice",
+			Usage: "Create new indice with settings",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "indice-name",
+					Usage: "The indice name to create",
+				},
+				cli.StringFlag{
+					Name:  "indice-setting-file",
+					Usage: "The indice setting file",
+				},
+			},
+			Action: elktools_elasticsearch.CreateIndice,
+		},
 	}
 
 	app.Before = func(c *cli.Context) error {
