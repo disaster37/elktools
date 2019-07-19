@@ -158,3 +158,98 @@ Sample of command:
 ```bash
 elktools_linux_amd64 --elasticsearch-url https://elasticsearch.company.com --elasticsearch-user elastic --elasticsearch-password changeme --self-signed-certificate get-lifecycle-policy-status --elasticsearch-index logstash-2019.01.01
 ```
+
+### Create or update indice template from file
+
+It permit to create or update indice template on Elasticsearch from file.
+
+You need to set the following parameters:
+- **--indice-template-id**: The unique indice template name you should to create or update
+- **--indice-template-file**: The full path of file that contain the indice template to create or update.
+
+Sample of indice template call `sample-indice-template.json`:
+```json
+{
+  "index_patterns": [
+    "logstash-*"
+  ],
+  "order": 2,
+  "settings": {
+    "index.lifecycle.name": "policy-logstash-log",
+    "index.refresh_interval": "5s"
+  }
+}
+```
+
+Sample of command:
+```bash
+elktools_linux_amd64 --elasticsearch-url https://elasticsearch.company.com --elasticsearch-user elastic --elasticsearch-password changeme --self-signed-certificate create-or-update-indice-template --indice-template-id logstash-log --indice-template-file sample-indice-template.json
+```
+
+### Create or update all indice templates from folder
+
+It permit to create or update all indice templates contain in folder where each file contain one indice template.
+
+> The unique name of indice template is based on file name.
+
+You need to set the following parameters:
+- **--indice-template-path**: The full path of folder that contain the indice templates to create or update
+
+Sample of command:
+```bash
+elktools_linux_amd64 --elasticsearch-url https://elasticsearch.company.com --elasticsearch-user elastic --elasticsearch-password changeme --self-signed-certificate create-or-update-all-indice-templates --indice-template-path indice-templates/ 
+```
+
+### Delete one indice template
+
+It permit to delete one indice template in Elasticsearch.
+
+You need to set the following parameters:
+- **--indice-template-id**: The unique name of indice template you should to delete
+
+Sample of command:
+```bash
+elktools_linux_amd64 --elasticsearch-url https://elasticsearch.company.com --elasticsearch-user elastic --elasticsearch-password changeme --self-signed-certificate delete-indice-template --indice-template-id logstash-log
+```
+
+### Save indice template in file
+
+It permit to save one existing indice template from Elasticsearch to file.
+
+You need to set the following parameters:
+- **--indice-template-id**: The unique name of indice template you should to save
+- **--indice-template-file**: The full path of file where you should to store the indice template
+
+Sample of command:
+```bash
+elktools_linux_amd64 --elasticsearch-url https://elasticsearch.company.com --elasticsearch-user elastic --elasticsearch-password changeme --self-signed-certificate save-indice-template --indice-template-id logstash-log --indice-template-file template-backup.json
+```
+
+### Create indice from file
+
+It permit to create new indice on Elasticsearch. It usefull for exemple create rolleover indice.
+
+You need to set the following parameters:
+- **indice-name**: The indice name you should to create
+- **indice-setting-file**: The full path of file that contain the indice settings
+
+
+Sample of indice setting call `indice-setting.json`:
+```json
+{
+  "settings": {
+    "number_of_shards": "2",
+    "number_of_replicas": "1"
+  },
+  "aliases": {
+    "logstash-log-alias": {
+      "is_write_index": true
+    }
+  }
+}
+```
+
+Sample of command:
+```bash
+elktools_linux_amd64 --elasticsearch-url https://elasticsearch.company.com --elasticsearch-user elastic --elasticsearch-password changeme --self-signed-certificate create-indice --indice-name logstash-log-000001 --indice-setting-file indice-setting.json
+```
