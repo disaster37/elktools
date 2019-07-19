@@ -3,7 +3,7 @@ package elktools_elasticsearch
 import (
 	"context"
 	"github.com/disaster37/elktools/helper"
-	"github.com/elastic/go-elasticsearch"
+	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
@@ -14,7 +14,7 @@ import (
 // CreateIndiceTemplate permit to create or update from cli the indice template
 func CreateIndiceTemplate(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -64,8 +64,8 @@ func createIndiceTemplate(id string, file string, es *elasticsearch.Client) (str
 	log.Debug("Template: ", templateJson)
 
 	res, err := es.API.Indices.PutTemplate(
-		strings.NewReader(templateJson),
 		id,
+		strings.NewReader(templateJson),
 		es.API.Indices.PutTemplate.WithContext(context.Background()),
 		es.API.Indices.PutTemplate.WithPretty(),
 	)
@@ -90,7 +90,7 @@ func createIndiceTemplate(id string, file string, es *elasticsearch.Client) (str
 // CreateAllIndiceTemplates permit to create or update from cli all indice templates found on the given folder
 func CreateAllIndiceTemplates(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -151,7 +151,7 @@ func createAllIndiceTemplates(path string, es *elasticsearch.Client) ([]string, 
 // DeleteIndiceTemplate permit to delete indice template from cli
 func DeleteIndiceTemplate(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func deleteIndiceTemplate(id string, es *elasticsearch.Client) (string, error) {
 // SaveIndiceTemplate permit to save indice template on file from cli
 func SaveIndiceTemplate(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
