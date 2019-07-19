@@ -7,6 +7,7 @@ import (
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	"gopkg.in/urfave/cli.v1"
 	"os"
+	"sort"
 )
 
 func main() {
@@ -57,8 +58,9 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		{
-			Name:  "create-or-update-lifecycle-policy",
-			Usage: "Create or update lifecycle policy",
+			Name:     "create-or-update-lifecycle-policy",
+			Usage:    "Create or update lifecycle policy",
+			Category: "ILM policy actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "lifecycle-policy-id",
@@ -72,8 +74,9 @@ func main() {
 			Action: elktools_elasticsearch.CreateILMPolicy,
 		},
 		{
-			Name:  "save-lifecycle-policy",
-			Usage: "Save lifecycle policy on file",
+			Name:     "save-lifecycle-policy",
+			Usage:    "Save lifecycle policy on file",
+			Category: "ILM policy actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "lifecycle-policy-id",
@@ -87,8 +90,9 @@ func main() {
 			Action: elktools_elasticsearch.SaveILMPolicy,
 		},
 		{
-			Name:  "delete-lifecycle-policy",
-			Usage: "Delete lifecycle policy",
+			Name:     "delete-lifecycle-policy",
+			Usage:    "Delete lifecycle policy",
+			Category: "ILM policy actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "lifecycle-policy-id",
@@ -98,8 +102,9 @@ func main() {
 			Action: elktools_elasticsearch.DeleteILMPolicy,
 		},
 		{
-			Name:  "save-all-lifecycle-policies",
-			Usage: "Save all lifecycle policies on folder provided",
+			Name:     "save-all-lifecycle-policies",
+			Usage:    "Save all lifecycle policies on folder provided",
+			Category: "ILM policy actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "lifecycle-policy-base-path",
@@ -110,8 +115,9 @@ func main() {
 			Action: elktools_elasticsearch.SaveAllILMPolicies,
 		},
 		{
-			Name:  "create-or-update-all-lifecycle-policies",
-			Usage: "Create or update all lifecycle policies from folder provided",
+			Name:     "create-or-update-all-lifecycle-policies",
+			Usage:    "Create or update all lifecycle policies from folder provided",
+			Category: "ILM policy actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "lifecycle-policy-base-path",
@@ -122,8 +128,9 @@ func main() {
 			Action: elktools_elasticsearch.CreateAllILMPolicies,
 		},
 		{
-			Name:  "get-lifecycle-policy-status",
-			Usage: "Get the lifecycle policy on Elasticsearch index",
+			Name:     "get-lifecycle-policy-status",
+			Usage:    "Get the lifecycle policy on Elasticsearch index",
+			Category: "ILM policy actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "elasticsearch-index",
@@ -133,8 +140,9 @@ func main() {
 			Action: elktools_elasticsearch.GetStatusILMPolicy,
 		},
 		{
-			Name:  "create-or-update-indice-template",
-			Usage: "Create or update indice template",
+			Name:     "create-or-update-indice-template",
+			Usage:    "Create or update indice template",
+			Category: "Indice template actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "indice-template-id",
@@ -148,8 +156,9 @@ func main() {
 			Action: elktools_elasticsearch.CreateIndiceTemplate,
 		},
 		{
-			Name:  "create-or-update-all-indice-templates",
-			Usage: "Create or update all indice templates",
+			Name:     "create-or-update-all-indice-templates",
+			Usage:    "Create or update all indice templates",
+			Category: "Indice template actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "indice-template-path",
@@ -159,8 +168,9 @@ func main() {
 			Action: elktools_elasticsearch.CreateAllIndiceTemplates,
 		},
 		{
-			Name:  "delete-indice-template",
-			Usage: "Delete indice template",
+			Name:     "delete-indice-template",
+			Usage:    "Delete indice template",
+			Category: "Indice template actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "indice-template-id",
@@ -170,8 +180,9 @@ func main() {
 			Action: elktools_elasticsearch.DeleteIndiceTemplate,
 		},
 		{
-			Name:  "save-indice-template",
-			Usage: "Save indice template on file",
+			Name:     "save-indice-template",
+			Usage:    "Save indice template on file",
+			Category: "Indice template actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "indice-template-id",
@@ -185,8 +196,9 @@ func main() {
 			Action: elktools_elasticsearch.SaveIndiceTemplate,
 		},
 		{
-			Name:  "create-indice",
-			Usage: "Create new indice with settings",
+			Name:     "create-indice",
+			Usage:    "Create new indice with settings",
+			Category: "Indice actions",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "indice-name",
@@ -213,6 +225,8 @@ func main() {
 		}
 		return nil
 	}
+
+	sort.Sort(cli.CommandsByName(app.Commands))
 
 	err := app.Run(os.Args)
 	if err != nil {
