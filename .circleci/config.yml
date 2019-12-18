@@ -53,7 +53,7 @@ jobs:
       - checkout
       - run: go get github.com/mitchellh/gox
       - run: go get github.com/tcnksm/ghr
-      - run: sed -i 's/app.Version := "develop"/app.Version := "$CIRCLE_TAG"/' elktools-cli.go
+      - run: sed -i 's/app.Version := "develop"/app.Version := "$CIRCLE_TAG"/' main.go
       - run: gox -os="freebsd darwin linux windows" -arch "386 amd64" -parallel=1  -output "dist/elktools_${CIRCLE_TAG}_{{.OS}}_{{.Arch}}"
       - run: CGO_ENABLED=0 gox -os="freebsd darwin linux windows" -arch "386 amd64" -parallel=1 -output "dist/elktools_${CIRCLE_TAG}_{{.OS}}_{{.Arch}}_static"
       - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG dist/
