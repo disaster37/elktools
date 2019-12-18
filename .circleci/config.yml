@@ -8,14 +8,14 @@ jobs:
       - image: circleci/golang:1.12
         environment:
           GO111MODULE: "on"
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
         name: es
         environment:
           cluster.name: test
           discovery.type: single-node
           ELASTIC_PASSWORD: changeme
           xpack.security.enabled: "true"
-      - image: docker.elastic.co/kibana/kibana:7.2.0
+      - image: docker.elastic.co/kibana/kibana:7.4.2
         name: kb
         environment:
           ELASTICSEARCH_HOSTS: http://es:9200
@@ -28,19 +28,22 @@ jobs:
       - run: go test ./... -parallel=1
   build:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
     working_directory: /go/src/github.com/disaster37/elktools
     steps:
       - checkout
       - run: go build
   release:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
         environment:
-          - GITHUB_TOKEN: $GITHUB_TOKEN
-          - CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME
-          - CIRCLE_PROJECT_REPONAME: $CIRCLE_PROJECT_REPONAME
-          - CIRCLE_TAG: $CIRCLE_TAG
+          GITHUB_TOKEN: $GITHUB_TOKEN
+          CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME
+          CIRCLE_PROJECT_REPONAME: $CIRCLE_PROJECT_REPONAME
+          CIRCLE_TAG: $CIRCLE_TAG
+          GO111MODULE: "on"
     working_directory: /go/src/github.com/disaster37/elktools
     steps:
       - checkout
