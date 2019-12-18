@@ -105,13 +105,13 @@ func createSpaceFromFile(filePath string, kb *kibana.Client) error {
 	// Manage dashboards
 	if spaceSetting.LoadDashboards == true {
 		// Get all TPL dashboards
-		parameters := &kbapi.OptionalFindParameters {
-			Fields: []string{"id", "title"},
+		parameters := &kbapi.OptionalFindParameters{
+			Fields:         []string{"id", "title"},
 			ObjectsPerPage: 10000,
-			SearchFields: []string{"title"},
-			Search: "TPL*",s
+			SearchFields:   []string{"title"},
+			Search:         "TPL*",
 		}
-		dashboardsRes, err := kb.API.KibanaSavedObject.Find("dashboard", parameters)
+		dashboardsRes, err := kb.API.KibanaSavedObject.Find("dashboard", "default", parameters)
 		if err != nil {
 			return err
 		}

@@ -4,8 +4,8 @@ import (
 	"os"
 	"sort"
 
-	elktools_elasticsearch "github.com/disaster37/elktools/7.x/elasticsearch"
-	elktools_kibana "github.com/disaster37/elktools/kibana"
+	elktools_elasticsearch "github.com/disaster37/elktools/v7/elasticsearch"
+	elktools_kibana "github.com/disaster37/elktools/v7/kibana"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 	"github.com/urfave/cli/altsrc"
