@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
-	github.com/disaster37/go-kibana-rest/v7 v7.0.0-20191113145056-833b27792a6e
+	github.com/disaster37/go-kibana-rest/v7 v7.4.2-2
 	github.com/elastic/go-elasticsearch/v7 v7.3.0
 	github.com/hashicorp/go-version v1.2.0 // indirect
 	github.com/keegancsmith/rpc v1.1.0 // indirect
