@@ -1,16 +1,18 @@
 package main
 
 import (
-	"github.com/disaster37/elktools/elasticsearch"
-	log "github.com/sirupsen/logrus"
-	"github.com/urfave/cli/altsrc"
-	prefixed "github.com/x-cray/logrus-prefixed-formatter"
-	"gopkg.in/urfave/cli.v1"
 	"os"
 	"sort"
+
+	elktools_elasticsearch "github.com/disaster37/elktools/v7/elasticsearch"
+	elktools_kibana "github.com/disaster37/elktools/v7/kibana"
+	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli"
+	"github.com/urfave/cli/altsrc"
+	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )
 
-func main() {
+func run(args []string) error {
 
 	// Logger setting
 	formatter := new(prefixed.TextFormatter)
@@ -53,6 +55,12 @@ func main() {
 		},
 	}
 	app.Commands = []cli.Command{
+		{
+			Name:     "check-connexion-elasticsearch",
+			Usage:    "Check the elasticsearch connexion",
+			Category: "Check",
+			Action:   elktools_elasticsearch.CheckConnexion,
+		},
 		{
 			Name:     "create-or-update-lifecycle-policy",
 			Usage:    "Create or update lifecycle policy",
@@ -207,6 +215,12 @@ func main() {
 			},
 			Action: elktools_elasticsearch.CreateIndice,
 		},
+		{
+			Name:     "check-connexion-kibana",
+			Usage:    "Check the kibana connexion",
+			Category: "Check",
+			Action:   elktools_kibana.CheckConnexion,
+		},
 	}
 
 	app.Before = func(c *cli.Context) error {
@@ -224,7 +238,12 @@ func main() {
 
 	sort.Sort(cli.CommandsByName(app.Commands))
 
-	err := app.Run(os.Args)
+	err := app.Run(args)
+	return err
+}
+
+func main() {
+	err := run(os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}

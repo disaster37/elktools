@@ -2,13 +2,14 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"github.com/disaster37/elktools/helper"
+	"io/ioutil"
+	"strings"
+
+	"github.com/disaster37/elktools/v7/helper"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/urfave/cli.v1"
-	"io/ioutil"
-	"strings"
+	"github.com/urfave/cli"
 )
 
 // CreateIndiceTemplate permit to create or update from cli the indice template

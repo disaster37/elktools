@@ -2,12 +2,14 @@ package elktools_elasticsearch
 
 import (
 	"crypto/tls"
+	"io/ioutil"
+	"net/http"
+	"strings"
+
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/urfave/cli.v1"
-	"net/http"
-	"strings"
+	"github.com/urfave/cli"
 )
 
 func manageElasticsearchGlobalParameters(c *cli.Context) (*elasticsearch.Client, error) {
@@ -43,4 +45,41 @@ func manageElasticsearchGlobalParameters(c *cli.Context) (*elasticsearch.Client,
 
 	return es, nil
 
+}
+
+func CheckConnexion(c *cli.Context) error {
+
+	es, err := manageElasticsearchGlobalParameters(c)
+	if err != nil {
+		return err
+	}
+
+	clientInfo, err := checkConnexion(es)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Connexion OK:\n%s", clientInfo)
+
+	return nil
+}
+
+func checkConnexion(es *elasticsearch.Client) (string, error) {
+
+	res, err := es.Info()
+	if err != nil {
+		return "", err
+	}
+
+	defer res.Body.Close()
+
+	if res.IsError() {
+		return "", errors.Errorf("Error when check Elasticsearch connexion: %s", res.String())
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(body), nil
 }

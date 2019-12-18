@@ -2,12 +2,13 @@ package elktools_elasticsearch
 
 import (
 	"context"
+	"io/ioutil"
+	"strings"
+
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/urfave/cli.v1"
-	"io/ioutil"
-	"strings"
+	"github.com/urfave/cli"
 )
 
 // CreateIndice permit to create new indice with settings

@@ -2,9 +2,10 @@ package elktools_elasticsearch
 
 import (
 	"context"
+	"strings"
+
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/stretchr/testify/assert"
-	"strings"
 )
 
 func (s *ESTestSuite) TestCreateSaveDeleteIlmPolicy() {

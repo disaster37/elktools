@@ -1,13 +1,14 @@
 package elktools_elasticsearch
 
 import (
+	"testing"
+	"time"
+
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
-	"testing"
-	"time"
 )
 
 type ESTestSuite struct {
@@ -22,15 +23,18 @@ func (s *ESTestSuite) SetupSuite() {
 	logrus.SetLevel(logrus.DebugLevel)
 
 	// Init client
-	ElasticsearchUrl = "http://es:9200"
-	User = "elastic"
-	Password = "changeme"
+	cfg := elasticsearch.Config{
+		Addresses: []string{"http://golang-12-es:9200"},
+		Username:  "elastic",
+		Password:  "changeme",
+	}
 
-	// Wait es is online
-	client, err := manageElasticsearchGlobalParameters()
+	client, err := elasticsearch.NewClient(cfg)
 	if err != nil {
 		panic(err)
 	}
+
+	// Wait es is online
 	isOnline := false
 	for isOnline == false {
 		res, err := client.Info()
@@ -55,9 +59,9 @@ func TestESTestSuite(t *testing.T) {
 	suite.Run(t, new(ESTestSuite))
 }
 
-func (s *ESTestSuite) TestManageElasticsearchGlobalParameters() {
+func (s *ESTestSuite) TestCheckConnexion() {
 
-	client, err := manageElasticsearchGlobalParameters()
+	clientInfo, err := checkConnexion(s.client)
 	assert.NoError(s.T(), err)
-	assert.NotNil(s.T(), client)
+	assert.NotEmpty(s.T(), clientInfo)
 }

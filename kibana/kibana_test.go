@@ -1,18 +1,19 @@
 package elktools_kibana
 
 import (
-	"github.com/elastic/go-elasticsearch"
+	"testing"
+	"time"
+
+	"github.com/disaster37/go-kibana-rest/v7"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
-	"testing"
-	"time"
 )
 
 type ESTestSuite struct {
 	suite.Suite
-	client *elasticsearch.Client
+	client *kibana.Client
 }
 
 func (s *ESTestSuite) SetupSuite() {
@@ -22,19 +23,23 @@ func (s *ESTestSuite) SetupSuite() {
 	logrus.SetLevel(logrus.DebugLevel)
 
 	// Init client
-	ElasticsearchUrl = "http://es:9200"
-	User = "elastic"
-	Password = "changeme"
+	cfg := kibana.Config{
+		Address:          "http://golang-12-kb:5601",
+		Username:         "elastic",
+		Password:         "changeme",
+		DisableVerifySSL: false,
+	}
 
-	// Wait es is online
-	client, err := manageElasticsearchGlobalParameters()
+	client, err := kibana.NewClient(cfg)
 	if err != nil {
 		panic(err)
 	}
+
+	// Wait es is online
 	isOnline := false
 	for isOnline == false {
-		res, err := client.Info()
-		if err == nil && res.IsError() == false {
+		_, err := client.API.KibanaSpaces.List()
+		if err == nil {
 			isOnline = true
 		} else {
 			time.Sleep(5 * time.Second)
@@ -55,9 +60,8 @@ func TestESTestSuite(t *testing.T) {
 	suite.Run(t, new(ESTestSuite))
 }
 
-func (s *ESTestSuite) TestManageElasticsearchGlobalParameters() {
+func (s *ESTestSuite) TestCheckConnexion() {
 
-	client, err := manageElasticsearchGlobalParameters()
+	err := checkConnexion(s.client)
 	assert.NoError(s.T(), err)
-	assert.NotNil(s.T(), client)
 }

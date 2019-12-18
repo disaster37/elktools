@@ -3,7 +3,9 @@ A cli tools to help manage ELK
 
 ## Contribute
 
-You PR are always welcome. Please use develop branch to do PR (git flow pattern)
+You PR are always welcome. Please use the righ branch to do PR:
+ - 7.x for Elasticsearch 7.x
+ - 6.x for Elasticsearch 6.x
 Don't forget to add test if you add some functionalities.
 
 To build, you can use the following command line:
@@ -24,7 +26,7 @@ The following parameters are available for all commands line :
 - **--url**: The Elasticsearch URL. For exemple https://elasticsearch.company.com. Alternatively you can use environment variable `ELASTICSEARCH_URL`.
 - **--user**: The login to connect on Elasticsearch. Alternatively you can use environment variable `ELASTICSEARCH_USER`.
 - **--password**: The password to connect on Elasticsearch. Alternatively you can use environment variable `ELASTICSEARCH_PASSWORD`.
-- **--self-signed-certificate**: Disable the check of server SSL certificate 
+- **--self-signed-certificate**: Disable the check of server SSL certificate
 - **--debug**: Enable the debug mode
 - **--help**: Display help for the current command
 
@@ -91,7 +93,7 @@ Sample of lifecycle policy call `sample-ilm.json`:
 
 Sample of command:
 ```bash
-elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate create-or-update-lifecycle-policy --lifecycle-policy-id test --lifecycle-policy-file sample-ilm.json 
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate create-or-update-lifecycle-policy --lifecycle-policy-id test --lifecycle-policy-file sample-ilm.json
 ```
 
 ### Create or updates multiples ILM policy from folder
@@ -118,7 +120,7 @@ You need to set the following parameters:
 
 Sample of command:
 ```bash
-elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate save-lifecycle-policy --lifecycle-policy-id test --lifecycle-policy-file backup-ilm.json 
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate save-lifecycle-policy --lifecycle-policy-id test --lifecycle-policy-file backup-ilm.json
 ```
 
 ### Save all ILM policies on files
@@ -197,7 +199,7 @@ You need to set the following parameters:
 
 Sample of command:
 ```bash
-elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate create-or-update-all-indice-templates --indice-template-path indice-templates/ 
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate create-or-update-all-indice-templates --indice-template-path indice-templates/
 ```
 
 ### Delete one indice template
