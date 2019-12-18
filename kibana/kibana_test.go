@@ -1,6 +1,7 @@
 package elktools_kibana
 
 import (
+	"os"
 	"testing"
 	"time"
 
@@ -23,10 +24,17 @@ func (s *ESTestSuite) SetupSuite() {
 	logrus.SetLevel(logrus.DebugLevel)
 
 	// Init client
+	address := os.Getenv("KIBANA_URL")
+	username := os.Getenv("ELASTICSEARCH_USERNAME")
+	password := os.Getenv("ELASTICSEARCH_PASSWORD")
+
+	if address == "" {
+		panic("You need to put kibana url on environment variable KIBANA_URL. If you need auth, you can use ELASTICSEARCH_USERNAME and ELASTICSEARCH_PASSWORD")
+	}
 	cfg := kibana.Config{
-		Address:          "http://golang-12-kb:5601",
-		Username:         "elastic",
-		Password:         "changeme",
+		Address:          address,
+		Username:         username,
+		Password:         password,
 		DisableVerifySSL: false,
 	}
 

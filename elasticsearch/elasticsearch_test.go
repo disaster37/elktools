@@ -1,6 +1,7 @@
 package elktools_elasticsearch
 
 import (
+	"os"
 	"testing"
 	"time"
 
@@ -23,10 +24,13 @@ func (s *ESTestSuite) SetupSuite() {
 	logrus.SetLevel(logrus.DebugLevel)
 
 	// Init client
+	//address := os.Getenv("ELASTICSEARCH_URL")
+	username := os.Getenv("ELASTICSEARCH_USERNAME")
+	password := os.Getenv("ELASTICSEARCH_PASSWORD")
+
 	cfg := elasticsearch.Config{
-		Addresses: []string{"http://golang-12-es:9200"},
-		Username:  "elastic",
-		Password:  "changeme",
+		Username: username,
+		Password: password,
 	}
 
 	client, err := elasticsearch.NewClient(cfg)

@@ -85,7 +85,7 @@ func createSpaceFromFile(filePath string, kb *kibana.Client) error {
 	role = &kbapi.KibanaRole{
 		Name: roleName,
 		Kibana: []kbapi.KibanaRoleKibana{
-			kbapi.KibanaRoleKibana{
+			{
 				Feature: map[string][]string{},
 				Spaces: []string{
 					spaceSetting.Name,

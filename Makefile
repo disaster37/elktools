@@ -1,31 +1,15 @@
-SUDO_DOCKER ?=
+TEST?=./...
+KIBANA_URL ?= http://127.0.0.1:5601
+ELASTICSEARCH_URL ?= http://127.0.0.1:9200
+ELASTICSEARCH_USERNAME ?= elastic
+ELASTICSEARCH_PASSWORD ?= changeme
 
 all: help
 
-help:
-	@echo "make test - run tests"
-	@echo "make clean - stop and remove test containers"
-	@echo "make pull - pull Docker images on registry"
-	@echo "make init - lauch ambari infra for test purpose"
-	@echo "make build - compile program"
 
-init:
-	${SUDO_DOCKER} docker-compose up -d elasticsearch
-	until $$(docker-compose run --rm curl --output /dev/null --silent --head --fail -u elastic:changeme http://es:9200); do sleep 5; done
+test: fmt
+	KIBANA_URL=${KIBANA_URL} ELASTICSEARCH_URL=${ELASTICSEARCH_URL} ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME} ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD} go test $(TEST) -v -count 1 -parallel 1 -race -coverprofile=coverage.txt -covermode=atomic $(TESTARGS) -timeout 120m
 
-test: clean init
-	${SUDO_DOCKER} docker-compose run --rm test
-
-
-build:
-	${SUDO_DOCKER} docker-compose run --rm build
-	
-pull:
-	${SUDO_DOCKER} docker-compose pull --ignore-pull-failures
-
-clean:
-	${SUDO_DOCKER} docker-compose logs elasticsearch || exit 0
-	${SUDO_DOCKER} docker-compose down -v
-
-release:
-	@echo "Do nothink"
+fmt:
+	@echo "==> Fixing source code with gofmt..."
+	gofmt -s -w ./
