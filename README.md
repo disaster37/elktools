@@ -23,7 +23,7 @@ make test
 ### Global options
 
 The following parameters are available for all commands line :
-- **--url**: The Elasticsearch URL. For exemple https://elasticsearch.company.com. Alternatively you can use environment variable `ELASTICSEARCH_URL`.
+- **--url**: The Elasticsearch or Kibana URL. For exemple https://elasticsearch.company.com. Alternatively you can use environment variable `ELASTICSEARCH_URL`.
 - **--user**: The login to connect on Elasticsearch. Alternatively you can use environment variable `ELASTICSEARCH_USER`.
 - **--password**: The password to connect on Elasticsearch. Alternatively you can use environment variable `ELASTICSEARCH_PASSWORD`.
 - **--self-signed-certificate**: Disable the check of server SSL certificate
@@ -34,9 +34,9 @@ The following parameters are available for all commands line :
 You can set also this parameters on yaml file (one or all) and use the parameters `--config` with the path of your Yaml file.
 ```yaml
 ---
-elasticsearch-url: https://elasticsearch.company.com
-elasticsearch-user: elastic
-elasticsearch-password: changeme
+url: https://elasticsearch.company.com
+user: elastic
+password: changeme
 ```
 
 ### Create or update one ILM policy from file
@@ -254,4 +254,34 @@ Sample of indice setting call `indice-setting.json`:
 Sample of command:
 ```bash
 elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate create-indice --indice-name logstash-log-000001 --indice-setting-file indice-setting.json
+```
+
+### Export all Kibana dashboards
+
+It's permit to export all Kibana dashboards using Kibana API.
+
+You need to set the following parameters:
+- **--file-path**: The full path where store exported dashboard and references.
+- **--user-space**: The kibana user space where to retrive dashboards. Default to `default`.
+
+
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://kibana.company.com --user elastic --password changeme --self-signed-certificate export-all-dashboards --file-path export.ndjson --user-space defaut
+```
+
+### Import all Kibana dashboards
+
+It's permit to import all Kibana dashboards using Kibana API.
+
+You need to set the following parameters:
+- **--file-path**: The full path where load dashboards and references.
+- **--user-space**: The kibana user space where to load dashboards. Default to `default`.
+
+
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://kibana.company.com --user elastic --password changeme --self-signed-certificate import-all-dashboards --file-path export.ndjson --user-space defaut
 ```

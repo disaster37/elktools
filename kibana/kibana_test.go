@@ -1,6 +1,7 @@
 package elktools_kibana
 
 import (
+	"os"
 	"testing"
 	"time"
 
@@ -11,22 +12,29 @@ import (
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )
 
-type ESTestSuite struct {
+type KBTestSuite struct {
 	suite.Suite
 	client *kibana.Client
 }
 
-func (s *ESTestSuite) SetupSuite() {
+func (s *KBTestSuite) SetupSuite() {
 
 	// Init logger
 	logrus.SetFormatter(new(prefixed.TextFormatter))
 	logrus.SetLevel(logrus.DebugLevel)
 
 	// Init client
+	address := os.Getenv("KIBANA_URL")
+	username := os.Getenv("ELASTICSEARCH_USERNAME")
+	password := os.Getenv("ELASTICSEARCH_PASSWORD")
+
+	if address == "" {
+		panic("You need to put kibana url on environment variable KIBANA_URL. If you need auth, you can use ELASTICSEARCH_USERNAME and ELASTICSEARCH_PASSWORD")
+	}
 	cfg := kibana.Config{
-		Address:          "http://golang-12-kb:5601",
-		Username:         "elastic",
-		Password:         "changeme",
+		Address:          address,
+		Username:         username,
+		Password:         password,
 		DisableVerifySSL: false,
 	}
 
@@ -50,17 +58,17 @@ func (s *ESTestSuite) SetupSuite() {
 
 }
 
-func (s *ESTestSuite) SetupTest() {
+func (s *KBTestSuite) SetupTest() {
 
 	// Do somethink before each test
 
 }
 
-func TestESTestSuite(t *testing.T) {
-	suite.Run(t, new(ESTestSuite))
+func TestKBTestSuite(t *testing.T) {
+	suite.Run(t, new(KBTestSuite))
 }
 
-func (s *ESTestSuite) TestCheckConnexion() {
+func (s *KBTestSuite) TestCheckConnexion() {
 
 	err := checkConnexion(s.client)
 	assert.NoError(s.T(), err)

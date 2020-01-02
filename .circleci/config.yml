@@ -8,14 +8,18 @@ jobs:
       - image: circleci/golang:1.12
         environment:
           GO111MODULE: "on"
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+          ELASTICSEARCH_URL: "http://es:9200"
+          ELASTICSEARCH_USERNAME: "elastic"
+          ELASTICSEARCH_PASSWORD: "changeme"
+          KIBANA_URL: http://kb:5601
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
         name: es
         environment:
           cluster.name: test
           discovery.type: single-node
           ELASTIC_PASSWORD: changeme
           xpack.security.enabled: "true"
-      - image: docker.elastic.co/kibana/kibana:7.2.0
+      - image: docker.elastic.co/kibana/kibana:7.5.1
         name: kb
         environment:
           ELASTICSEARCH_HOSTS: http://es:9200
@@ -25,29 +29,33 @@ jobs:
     steps:
       - checkout
       - run: until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://kb:5601); do sleep 5; done
-      - run: go test ./... -parallel=1
+      - run: make test
   build:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
     working_directory: /go/src/github.com/disaster37/elktools
     steps:
       - checkout
       - run: go build
   release:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
         environment:
-          - GITHUB_TOKEN: $GITHUB_TOKEN
-          - CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME
-          - CIRCLE_PROJECT_REPONAME: $CIRCLE_PROJECT_REPONAME
-          - CIRCLE_TAG: $CIRCLE_TAG
+          GITHUB_TOKEN: $GITHUB_TOKEN
+          CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME
+          CIRCLE_PROJECT_REPONAME: $CIRCLE_PROJECT_REPONAME
+          CIRCLE_TAG: $CIRCLE_TAG
+          GO111MODULE: "on"
     working_directory: /go/src/github.com/disaster37/elktools
     steps:
       - checkout
       - run: go get github.com/mitchellh/gox
       - run: go get github.com/tcnksm/ghr
-      - run: sed -i 's/app.Version := "develop"/app.Version := "$CIRCLE_TAG"/' elktools-cli.go
-      - run: gox -os="linux" -output "dist/elktools_{{.OS}}_{{.Arch}}"
+      - run: sed -i 's/app.Version := "develop"/app.Version := "$CIRCLE_TAG"/' main.go
+      - run: gox -os="freebsd darwin linux windows" -arch "386 amd64" -parallel=1  -output "dist/elktools_${CIRCLE_TAG}_{{.OS}}_{{.Arch}}"
+      - run: CGO_ENABLED=0 gox -os="freebsd darwin linux windows" -arch "386 amd64" -parallel=1 -output "dist/elktools_${CIRCLE_TAG}_{{.OS}}_{{.Arch}}_static"
       - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG dist/
 workflows:
   version: 2

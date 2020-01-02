@@ -4,8 +4,8 @@ import (
 	"os"
 	"sort"
 
-	elktools_elasticsearch "github.com/disaster37/elktools/7.x/elasticsearch"
-	elktools_kibana "github.com/disaster37/elktools/kibana"
+	elktools_elasticsearch "github.com/disaster37/elktools/v7/elasticsearch"
+	elktools_kibana "github.com/disaster37/elktools/v7/kibana"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 	"github.com/urfave/cli/altsrc"
@@ -220,6 +220,40 @@ func run(args []string) error {
 			Usage:    "Check the kibana connexion",
 			Category: "Check",
 			Action:   elktools_kibana.CheckConnexion,
+		},
+		{
+			Name:     "export-all-dashboards",
+			Usage:    "Export all dashboards and all references in ndjson file",
+			Category: "Kibana dashboard",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "file-path",
+					Usage: "The file path to export all dashboards",
+				},
+				cli.StringFlag{
+					Name:  "user-space",
+					Usage: "The Kibana user space where export dashboards",
+					Value: "default",
+				},
+			},
+			Action: elktools_kibana.ExportDashboards,
+		},
+		{
+			Name:     "import-all-dashboards",
+			Usage:    "Import all dashboards and all references from ndjson file",
+			Category: "Kibana dashboard",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "file-path",
+					Usage: "The file path to load all dashboards",
+				},
+				cli.StringFlag{
+					Name:  "user-space",
+					Usage: "The Kibana user space where write dashboards",
+					Value: "default",
+				},
+			},
+			Action: elktools_kibana.ImportDashboards,
 		},
 	}
 

@@ -68,9 +68,9 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) (string, 
 	log.Debug("Policy: ", policyJson)
 
 	res, err := es.API.ILM.PutLifecycle(
+		id,
 		es.API.ILM.PutLifecycle.WithContext(context.Background()),
 		es.API.ILM.PutLifecycle.WithPretty(),
-		es.API.ILM.PutLifecycle.WithPolicy(id),
 		es.API.ILM.PutLifecycle.WithBody(strings.NewReader(policyJson)),
 	)
 
@@ -209,9 +209,9 @@ func deleteILMPolicy(id string, es *elasticsearch.Client) (string, error) {
 	log.Debug("ID: ", id)
 
 	res, err := es.API.ILM.DeleteLifecycle(
+		id,
 		es.API.ILM.DeleteLifecycle.WithContext(context.Background()),
 		es.API.ILM.DeleteLifecycle.WithPretty(),
-		es.API.ILM.DeleteLifecycle.WithPolicy(id),
 	)
 
 	if err != nil {
@@ -414,9 +414,9 @@ func getStatusILMPOlicy(index string, es *elasticsearch.Client) (string, error) 
 	}
 
 	res, err := es.API.ILM.ExplainLifecycle(
+		index,
 		es.API.ILM.ExplainLifecycle.WithContext(context.Background()),
 		es.API.ILM.ExplainLifecycle.WithPretty(),
-		es.API.ILM.ExplainLifecycle.WithIndex(index),
 	)
 
 	defer res.Body.Close()
