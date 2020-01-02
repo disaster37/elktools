@@ -32,6 +32,11 @@ func manageKibanaGlobalParameters(c *cli.Context) (*kibana.Client, error) {
 		return nil, err
 	}
 
+	err = checkConnexion(kb)
+	if err != nil {
+		return nil, err
+	}
+
 	return kb, nil
 
 }

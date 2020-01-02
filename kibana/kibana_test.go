@@ -12,12 +12,12 @@ import (
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )
 
-type ESTestSuite struct {
+type KBTestSuite struct {
 	suite.Suite
 	client *kibana.Client
 }
 
-func (s *ESTestSuite) SetupSuite() {
+func (s *KBTestSuite) SetupSuite() {
 
 	// Init logger
 	logrus.SetFormatter(new(prefixed.TextFormatter))
@@ -58,17 +58,17 @@ func (s *ESTestSuite) SetupSuite() {
 
 }
 
-func (s *ESTestSuite) SetupTest() {
+func (s *KBTestSuite) SetupTest() {
 
 	// Do somethink before each test
 
 }
 
-func TestESTestSuite(t *testing.T) {
-	suite.Run(t, new(ESTestSuite))
+func TestKBTestSuite(t *testing.T) {
+	suite.Run(t, new(KBTestSuite))
 }
 
-func (s *ESTestSuite) TestCheckConnexion() {
+func (s *KBTestSuite) TestCheckConnexion() {
 
 	err := checkConnexion(s.client)
 	assert.NoError(s.T(), err)

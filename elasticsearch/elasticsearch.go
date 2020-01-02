@@ -43,6 +43,11 @@ func manageElasticsearchGlobalParameters(c *cli.Context) (*elasticsearch.Client,
 		return nil, err
 	}
 
+	_, err = checkConnexion(es)
+	if err != nil {
+		return nil, err
+	}
+
 	return es, nil
 
 }
