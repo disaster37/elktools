@@ -12,14 +12,14 @@ jobs:
           ELASTICSEARCH_USERNAME: "elastic"
           ELASTICSEARCH_PASSWORD: "changeme"
           KIBANA_URL: http://kb:5601
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
         name: es
         environment:
           cluster.name: test
           discovery.type: single-node
           ELASTIC_PASSWORD: changeme
           xpack.security.enabled: "true"
-      - image: docker.elastic.co/kibana/kibana:7.4.2
+      - image: docker.elastic.co/kibana/kibana:7.5.1
         name: kb
         environment:
           ELASTICSEARCH_HOSTS: http://es:9200
