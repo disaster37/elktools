@@ -1,10 +1,13 @@
 package helper
 
 import (
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
 // WriteFile permit to write the content in file
@@ -12,10 +15,10 @@ import (
 func WriteFile(path string, content []byte) error {
 
 	if path == "" {
-		errors.New("Path can't be empty")
+		return errors.New("Path can't be empty")
 	}
 	if len(content) == 0 {
-		errors.New("Content can't be empty")
+		return errors.New("Content can't be empty")
 	}
 
 	f, err := os.Create(path)
@@ -39,7 +42,7 @@ func WriteFile(path string, content []byte) error {
 // It return empty list if it doesn't found file
 func ListFilesInPath(path string, extention string) ([]string, error) {
 	if path == "" {
-		errors.New("Path can't be empty")
+		return nil, errors.New("Path can't be empty")
 	}
 
 	var files []string
@@ -56,4 +59,25 @@ func ListFilesInPath(path string, extention string) ([]string, error) {
 	}
 
 	return files, nil
+}
+
+// LoadYaml permit to read yaml file and convert content to map
+func LoadYaml(filePath string, data interface{}) error {
+	if filePath == "" {
+		return errors.New("FilePath can't be empty")
+	}
+
+	log.Debug("FilePath: ", filePath)
+
+	b, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	err = yaml.Unmarshal(b, data)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

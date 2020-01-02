@@ -8,8 +8,12 @@ services:
       ELASTIC_PASSWORD: changeme
   
   test:
-    image: golang:1.11
+    image: golang:1.12
     working_dir: /go/src/github.com/disaster37/elktools
+    environment:
+      http_proxy: $http_proxy
+      https_proxy: $https_proxy
+      GO111MODULE: "on"
     volumes:
       - .:/go/src/github.com/disaster37/elktools
     command: "bash -c \"go test ./... -parallel=1\""
@@ -17,11 +21,12 @@ services:
       - elasticsearch:es
 
   build:
-    image: golang:1.11
+    image: golang:1.12
     working_dir: /go/src/github.com/disaster37/elktools
     environment:
       http_proxy: $http_proxy
       https_proxy: $https_proxy
+      GO111MODULE: "on"
     volumes:
       - .:/go/src/github.com/disaster37/elktools
     command: "bash -c \"go get github.com/mitchellh/gox && gox -osarch='linux/amd64' -output 'release/elktools_{{.OS}}_{{.Arch}}'\""

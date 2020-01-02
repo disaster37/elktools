@@ -1,0 +1,11 @@
+---
+name: "etl_outil"
+description: "Equipe ETL & Outils"
+features:
+  - Discover
+  - Visualize
+  - Dashboard
+  - Dev Tools
+  - Saved Objects Management
+  - Timelion
+load_dashboards: true

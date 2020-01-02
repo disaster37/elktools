@@ -1,9 +1,10 @@
 package helper
 
 import (
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWriteFile(t *testing.T) {
@@ -22,4 +23,11 @@ func TestListFilesInPath(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.Contains(t, res, "../fixtures/ilm/ilm.json")
+}
+
+func TestLoadYaml(t *testing.T) {
+	data := make(map[interface{}]interface{})
+	err := LoadYaml("../fixtures/helper/test.yaml", &data)
+	assert.NoError(t, err)
+	assert.Equal(t, "test", data["name"])
 }

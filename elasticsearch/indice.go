@@ -2,18 +2,19 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"github.com/elastic/go-elasticsearch"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
-	"gopkg.in/urfave/cli.v1"
 	"io/ioutil"
 	"strings"
+
+	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli"
 )
 
 // CreateIndice permit to create new indice with settings
 func CreateIndice(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}

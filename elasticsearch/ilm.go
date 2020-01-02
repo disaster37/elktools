@@ -3,20 +3,21 @@ package elktools_elasticsearch
 import (
 	"context"
 	"fmt"
-	"github.com/disaster37/elktools/helper"
-	"github.com/elastic/go-elasticsearch"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
-	"gopkg.in/urfave/cli.v1"
 	"io/ioutil"
 	"strings"
+
+	"github.com/disaster37/elktools/v7/helper"
+	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli"
 )
 
 // CreateILMPolicy permit to create or update Lifecycle policy
 // It return error if something wrong
 func CreateILMPolicy(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -66,11 +67,11 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) (string, 
 	policyJson := string(b)
 	log.Debug("Policy: ", policyJson)
 
-	res, err := es.Ilm.PutLifecycle(
-		es.Ilm.PutLifecycle.WithContext(context.Background()),
-		es.Ilm.PutLifecycle.WithPretty(),
-		es.Ilm.PutLifecycle.WithPolicy(id),
-		es.Ilm.PutLifecycle.WithBody(strings.NewReader(policyJson)),
+	res, err := es.API.ILM.PutLifecycle(
+		es.API.ILM.PutLifecycle.WithContext(context.Background()),
+		es.API.ILM.PutLifecycle.WithPretty(),
+		es.API.ILM.PutLifecycle.WithPolicy(id),
+		es.API.ILM.PutLifecycle.WithBody(strings.NewReader(policyJson)),
 	)
 
 	if err != nil {
@@ -93,7 +94,7 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) (string, 
 // SaveILMPolicy permit to get and write existing lifecycle policy on file
 func SaveILMPolicy(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -139,10 +140,10 @@ func saveIlmPolicy(id string, file string, es *elasticsearch.Client) (string, er
 	log.Debug("File: ", file)
 
 	// Read the policy from API
-	res, err := es.Ilm.GetLifecycle(
-		es.Ilm.GetLifecycle.WithContext(context.Background()),
-		es.Ilm.GetLifecycle.WithPretty(),
-		es.Ilm.GetLifecycle.WithPolicy(id),
+	res, err := es.API.ILM.GetLifecycle(
+		es.API.ILM.GetLifecycle.WithContext(context.Background()),
+		es.API.ILM.GetLifecycle.WithPretty(),
+		es.API.ILM.GetLifecycle.WithPolicy(id),
 	)
 	if err != nil {
 		return "", err
@@ -171,7 +172,7 @@ func saveIlmPolicy(id string, file string, es *elasticsearch.Client) (string, er
 // It return error if something wrong
 func DeleteILMPolicy(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -207,10 +208,10 @@ func deleteILMPolicy(id string, es *elasticsearch.Client) (string, error) {
 
 	log.Debug("ID: ", id)
 
-	res, err := es.Ilm.DeleteLifecycle(
-		es.Ilm.DeleteLifecycle.WithContext(context.Background()),
-		es.Ilm.DeleteLifecycle.WithPretty(),
-		es.Ilm.DeleteLifecycle.WithPolicy(id),
+	res, err := es.API.ILM.DeleteLifecycle(
+		es.API.ILM.DeleteLifecycle.WithContext(context.Background()),
+		es.API.ILM.DeleteLifecycle.WithPretty(),
+		es.API.ILM.DeleteLifecycle.WithPolicy(id),
 	)
 
 	if err != nil {
@@ -234,7 +235,7 @@ func deleteILMPolicy(id string, es *elasticsearch.Client) (string, error) {
 // SaveAllILMPolices permit to save all lifecycle policy
 func SaveAllILMPolicies(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -269,9 +270,9 @@ func saveAllILMPolicies(path string, es *elasticsearch.Client) (map[string]inter
 	}
 
 	// Read the policy from API
-	res, err := es.Ilm.GetLifecycle(
-		es.Ilm.GetLifecycle.WithContext(context.Background()),
-		es.Ilm.GetLifecycle.WithPretty(),
+	res, err := es.API.ILM.GetLifecycle(
+		es.API.ILM.GetLifecycle.WithContext(context.Background()),
+		es.API.ILM.GetLifecycle.WithPretty(),
 	)
 	if err != nil {
 		return nil, err
@@ -315,7 +316,7 @@ func saveAllILMPolicies(path string, es *elasticsearch.Client) (map[string]inter
 // CreateAllILMPolices permit to create all lifecycle policies
 func CreateAllILMPolicies(c *cli.Context) error {
 
-	es, err := manageElasticsearchGlobalParameters()
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -379,7 +380,8 @@ func createAllILMPolicies(path string, es *elasticsearch.Client) ([]string, erro
 
 // GetStatusIlmPolicy permit to get the current status of lifecycle policy on given index
 func GetStatusILMPolicy(c *cli.Context) error {
-	es, err := manageElasticsearchGlobalParameters()
+
+	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
 		return err
 	}
@@ -411,10 +413,10 @@ func getStatusILMPOlicy(index string, es *elasticsearch.Client) (string, error) 
 		return "", errors.New("You must set es")
 	}
 
-	res, err := es.Ilm.ExplainLifecycle(
-		es.Ilm.ExplainLifecycle.WithContext(context.Background()),
-		es.Ilm.ExplainLifecycle.WithPretty(),
-		es.Ilm.ExplainLifecycle.WithIndex(index),
+	res, err := es.API.ILM.ExplainLifecycle(
+		es.API.ILM.ExplainLifecycle.WithContext(context.Background()),
+		es.API.ILM.ExplainLifecycle.WithPretty(),
+		es.API.ILM.ExplainLifecycle.WithIndex(index),
 	)
 
 	defer res.Body.Close()
