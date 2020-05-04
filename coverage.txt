@@ -1,4 +1,15 @@
 mode: atomic
+github.com/disaster37/elktools/v7/helper/regex.go:11.68,12.17 1 1
+github.com/disaster37/elktools/v7/helper/regex.go:16.2,17.16 2 1
+github.com/disaster37/elktools/v7/helper/regex.go:21.2,22.19 2 1
+github.com/disaster37/elktools/v7/helper/regex.go:12.17,14.3 1 0
+github.com/disaster37/elktools/v7/helper/regex.go:17.16,19.3 1 0
+github.com/disaster37/elktools/v7/helper/convert.go:12.52,17.16 3 1
+github.com/disaster37/elktools/v7/helper/convert.go:21.2,21.23 1 1
+github.com/disaster37/elktools/v7/helper/convert.go:17.16,19.3 1 0
+github.com/disaster37/elktools/v7/helper/convert.go:27.64,32.16 3 1
+github.com/disaster37/elktools/v7/helper/convert.go:36.2,36.12 1 1
+github.com/disaster37/elktools/v7/helper/convert.go:32.16,34.3 1 0
 github.com/disaster37/elktools/v7/helper/file.go:15.51,17.16 1 1
 github.com/disaster37/elktools/v7/helper/file.go:20.2,20.23 1 1
 github.com/disaster37/elktools/v7/helper/file.go:24.2,25.16 2 1
@@ -24,17 +35,6 @@ github.com/disaster37/elktools/v7/helper/file.go:82.2,82.12 1 1
 github.com/disaster37/elktools/v7/helper/file.go:66.20,68.3 1 0
 github.com/disaster37/elktools/v7/helper/file.go:73.16,75.3 1 0
 github.com/disaster37/elktools/v7/helper/file.go:78.16,80.3 1 0
-github.com/disaster37/elktools/v7/helper/regex.go:11.68,12.17 1 1
-github.com/disaster37/elktools/v7/helper/regex.go:16.2,17.16 2 1
-github.com/disaster37/elktools/v7/helper/regex.go:21.2,22.19 2 1
-github.com/disaster37/elktools/v7/helper/regex.go:12.17,14.3 1 0
-github.com/disaster37/elktools/v7/helper/regex.go:17.16,19.3 1 0
-github.com/disaster37/elktools/v7/helper/convert.go:12.52,17.16 3 1
-github.com/disaster37/elktools/v7/helper/convert.go:21.2,21.23 1 1
-github.com/disaster37/elktools/v7/helper/convert.go:17.16,19.3 1 0
-github.com/disaster37/elktools/v7/helper/convert.go:27.64,32.16 3 1
-github.com/disaster37/elktools/v7/helper/convert.go:36.2,36.12 1 1
-github.com/disaster37/elktools/v7/helper/convert.go:32.16,34.3 1 0
 github.com/disaster37/elktools/v7/kibana/kibana.go:11.75,13.33 1 0
 github.com/disaster37/elktools/v7/kibana/kibana.go:17.2,31.16 7 0
 github.com/disaster37/elktools/v7/kibana/kibana.go:35.2,36.16 2 0
