@@ -432,3 +432,89 @@ func getStatusILMPOlicy(index string, es *elasticsearch.Client) (string, error) 
 	return string(body), nil
 
 }
+
+func startILMService(es *elasticsearch.Client) error {
+	res, err := es.ILM.Start(
+		es.ILM.Start.WithContext(context.Background()),
+		es.ILM.Start.WithPretty(),
+	)
+
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+
+	if res.IsError() {
+		return errors.Errorf("Error when start ILM service: %s", res.String())
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	log.Debugf("Response: %s", string(body))
+
+	return nil
+}
+
+func stopILMService(es *elasticsearch.Client) error {
+	res, err := es.ILM.Stop(
+		es.ILM.Stop.WithContext(context.Background()),
+		es.ILM.Stop.WithPretty(),
+	)
+
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+
+	if res.IsError() {
+		return errors.Errorf("Error when stop ILM service: %s", res.String())
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	log.Debugf("Response: %s", string(body))
+
+	return nil
+}
+
+func StopILMService(c *cli.Context) error {
+
+	es, err := manageElasticsearchGlobalParameters(c)
+	if err != nil {
+		return err
+	}
+
+	err = stopILMService(es)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Stop ILM service successfully")
+
+	return nil
+
+}
+
+func StartILMService(c *cli.Context) error {
+
+	es, err := manageElasticsearchGlobalParameters(c)
+	if err != nil {
+		return err
+	}
+
+	err = startILMService(es)
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Start ILM service successfully")
+
+	return nil
+
+}

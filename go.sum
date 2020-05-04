@@ -10,6 +10,8 @@ github.com/disaster37/go-kibana-rest/v7 v7.4.2-2 h1:rB8+FoQaa1zpTpsz4xpfP1+doR1A
 github.com/disaster37/go-kibana-rest/v7 v7.4.2-2/go.mod h1:Z87HQt6dkf7SvYqJinKPELp9HOPz15odL9ozK6iAXXI=
 github.com/elastic/go-elasticsearch/v7 v7.5.0 h1:kXW+EKls2BwsyQujTmVrxANb3U0qoz9wEq8Zkf/JEco=
 github.com/elastic/go-elasticsearch/v7 v7.5.0/go.mod h1:OJ4wdbtDNk5g503kvlHLyErCgQwwzmDtaFC4XyOxXA4=
+github.com/elastic/go-elasticsearch/v7 v7.5.1-0.20200429062015-7feb806067ec h1:QjVyNOwW0wCHhymzJIwEZBFsh1orcPt25dahziNTIj4=
+github.com/elastic/go-elasticsearch/v7 v7.5.1-0.20200429062015-7feb806067ec/go.mod h1:OJ4wdbtDNk5g503kvlHLyErCgQwwzmDtaFC4XyOxXA4=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/go-resty/resty/v2 v2.1.0 h1:Z6IefCpUMfnvItVJaJXWv/pMiiD11So35QgwEELsldE=
