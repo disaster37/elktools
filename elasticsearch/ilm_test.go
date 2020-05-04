@@ -50,3 +50,13 @@ func (s *ESTestSuite) TestCreateSaveDeleteIlmPolicy() {
 	assert.NoError(s.T(), err)
 
 }
+
+func (s *ESTestSuite) TestStartStopILMService() {
+
+	err := stopILMService(s.client)
+	assert.NoError(s.T(), err)
+
+	err = startILMService(s.client)
+	assert.NoError(s.T(), err)
+
+}

@@ -1,11 +1,11 @@
 module github.com/disaster37/elktools/v7
 
-go 1.12
+go 1.13
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/disaster37/go-kibana-rest/v7 v7.4.2-2
-	github.com/elastic/go-elasticsearch/v7 v7.5.0
+	github.com/elastic/go-elasticsearch/v7 v7.5.1-0.20200429062015-7feb806067ec
 	github.com/onsi/ginkgo v1.11.0 // indirect
 	github.com/onsi/gomega v1.8.1 // indirect
 	github.com/pkg/errors v0.8.1

@@ -69,3 +69,19 @@ func (s *ESTestSuite) TestCheckConnexion() {
 	assert.NoError(s.T(), err)
 	assert.NotEmpty(s.T(), clientInfo)
 }
+
+func (s *ESTestSuite) TestCheckCluster() {
+
+	clusterStatus, err := checkClusterStatus(s.client)
+	assert.NoError(s.T(), err)
+	assert.Equal(s.T(), "green", clusterStatus)
+}
+
+func (s *ESTestSuite) TestClusterRoutingAllocation() {
+
+	err := disableRoutingAllocation(s.client)
+	assert.NoError(s.T(), err)
+
+	err = enableRoutingAllocation(s.client)
+	assert.NoError(s.T(), err)
+}

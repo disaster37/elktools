@@ -255,6 +255,72 @@ func run(args []string) error {
 			},
 			Action: elktools_kibana.ImportDashboards,
 		},
+		{
+			Name:     "check-elasticsearch-status",
+			Usage:    "Check the elasticsearch status",
+			Category: "Check",
+			Action:   elktools_elasticsearch.CheckClusterStatus,
+		},
+		{
+			Name:     "disable-routing-allocation",
+			Usage:    "Disable routing allocation on Elasticsearch cluster",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.ClusterDisableRoutingAllocation,
+		},
+		{
+			Name:     "enable-routing-allocation",
+			Usage:    "Enable routing allocation on Elasticsearch cluster",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.ClusterEnableRoutingAllocation,
+		},
+		{
+			Name:     "enable-ml-upgrade",
+			Usage:    "Enable upgrade mode on ML",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.EnableMlUpgradeMode,
+		},
+		{
+			Name:     "disable-ml-upgrade",
+			Usage:    "Disable upgrade mode on ML",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.DisableMlUpgradeMode,
+		},
+		{
+			Name:     "stop-watcher-service",
+			Usage:    "Stop watcher service",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.StopWatcherService,
+		},
+		{
+			Name:     "start-watcher-service",
+			Usage:    "Start watcher service",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.StartWatcherService,
+		},
+		{
+			Name:     "stop-ilm-service",
+			Usage:    "Stop ILM service",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.StopILMService,
+		},
+		{
+			Name:     "start-ilm-service",
+			Usage:    "Start ILM service",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.StartILMService,
+		},
+		{
+			Name:     "stop-slm-service",
+			Usage:    "Stop SLM service",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.StopSLMService,
+		},
+		{
+			Name:     "start-slm-service",
+			Usage:    "Start SLM service",
+			Category: "Downtime",
+			Action:   elktools_elasticsearch.StartSLMService,
+		},
 	}
 
 	app.Before = func(c *cli.Context) error {
