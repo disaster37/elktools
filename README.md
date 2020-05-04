@@ -256,6 +256,116 @@ Sample of command:
 elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate create-indice --indice-name logstash-log-000001 --indice-setting-file indice-setting.json
 ```
 
+### Disable shard allocation
+
+It permit to disable shard allocation. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate disable-routing-allocation
+```
+
+### Enable shard allocation
+
+It permit to enable shard allocation. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate enable-routing-allocation
+```
+
+### Stop task for machine learning
+
+It permit to temporarily stop the tasks associated with active machine leaning jobs and datafeeds. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate enable-ml-upgrade
+```
+
+### Start task for machine learning
+
+It permit to start the tasks associated with active machine leaning jobs and datafeeds. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate disable-ml-upgrade
+```
+
+### Stop Watcher service
+
+It permit to stop watcher service. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate stop-watcher-service
+```
+
+### Start Watcher service
+
+It permit to start watcher service. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate start-watcher-service
+```
+
+### Stop ILM service
+
+It permit to stop Index Lifecycle Management service. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate stop-ilm-service
+```
+
+### Start ILM service
+
+It permit to start Index Lifecycle Management service. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate start-ilm-service
+```
+
+### Stop SLM service
+
+It permit to stop Snapshot Lifecycle Management service. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate stop-slm-service
+```
+
+### Start SLM service
+
+It permit to start Snapshot Lifecycle Management service. It usefull when reboot or upgrade nodes.
+
+There are no parameter
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://elasticsearch.company.com --user elastic --password changeme --self-signed-certificate start-slm-service
+```
+
 ### Export all Kibana dashboards
 
 It's permit to export all Kibana dashboards using Kibana API.
@@ -264,12 +374,14 @@ You need to set the following parameters:
 - **--file-path**: The full path where store exported dashboard and references.
 - **--user-space**: The kibana user space where to retrive dashboards. Default to `default`.
 
-
-
 Sample of command:
 ```bash
 elktools_linux_amd64 --url https://kibana.company.com --user elastic --password changeme --self-signed-certificate export-all-dashboards --file-path export.ndjson --user-space defaut
 ```
+
+
+
+
 
 ### Import all Kibana dashboards
 
