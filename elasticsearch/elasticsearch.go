@@ -96,12 +96,14 @@ func CheckClusterStatus(c *cli.Context) error {
 
 	es, err := manageElasticsearchGlobalParameters(c)
 	if err != nil {
-		return err
+		log.Errorf("Cluster Unknown:\n%s", err.Error())
+		os.Exit(3)
 	}
 
 	status, err := checkClusterStatus(es)
 	if err != nil {
-		return err
+		log.Errorf("Cluster Unknown:\n%s", err.Error())
+		os.Exit(3)
 	}
 
 	switch status {
