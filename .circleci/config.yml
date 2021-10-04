@@ -5,7 +5,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.16
         environment:
           GO111MODULE: "on"
           ELASTICSEARCH_URL: "http://es:9200"
@@ -32,7 +32,7 @@ jobs:
       - run: make test
   build:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.16
         environment:
           GO111MODULE: "on"
     working_directory: /go/src/github.com/disaster37/elktools
@@ -41,7 +41,7 @@ jobs:
       - run: go build
   release:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.16
         environment:
           GITHUB_TOKEN: $GITHUB_TOKEN
           CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME
