@@ -380,9 +380,6 @@ elktools_linux_amd64 --url https://kibana.company.com --user elastic --password 
 ```
 
 
-
-
-
 ### Import all Kibana dashboards
 
 It's permit to import all Kibana dashboards using Kibana API.
@@ -396,4 +393,27 @@ You need to set the following parameters:
 Sample of command:
 ```bash
 elktools_linux_amd64 --url https://kibana.company.com --user elastic --password changeme --self-signed-certificate import-all-dashboards --file-path export.ndjson --user-space defaut
+```
+
+### Export data form Elasticsearch to files
+
+It's permit to export some data from Elasticsearch to files.
+It usefull when you need extracts logs indexed on Elasticsearch to real log file to provide on external support.
+
+You need to set the following parameters:
+- **--from**: From time to export data (default: "now-24h")
+- **--to**: To time to export data (default: "now")
+- **--date-field**: The date field to range over (default: "@timestamp")
+- **--index**: The index to export data (default: "_all")
+- **--query**: To query to export data
+- **--fields**:  Fields to extracts (default: "message")
+- **--separator**: The separator to concatain field when extract multi fields (default: "|")
+- **--split-file-field**: The field to use to split data into multi files (default: "host.name")
+- **--path**: The root path to create extracted files
+
+
+
+Sample of command:
+```bash
+elktools_linux_amd64 --url https://kibana.company.com --user elastic --password changeme --self-signed-certificate export-data --to "now" --from "now-24h" --date-field "timestamp" --index "logs" --query "event.dataset: \"mysql\"" --fields "message" --split-file-field "instance.name" --path "/tmp"
 ```

@@ -7,8 +7,8 @@ import (
 	elktools_elasticsearch "github.com/disaster37/elktools/v7/elasticsearch"
 	elktools_kibana "github.com/disaster37/elktools/v7/kibana"
 	log "github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
-	"github.com/urfave/cli/altsrc"
+	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v2/altsrc"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )
 
@@ -26,35 +26,35 @@ func run(args []string) error {
 	app.Usage = "Manage ELK on cli interface"
 	app.Version = "develop"
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "config",
 			Usage: "Load configuration from `FILE`",
 		},
-		altsrc.NewStringFlag(cli.StringFlag{
-			Name:   "url",
-			Usage:  "The elasticsearch or kibana URL",
-			EnvVar: "ELKTOOLS_URL",
+		altsrc.NewStringFlag(&cli.StringFlag{
+			Name:    "url",
+			Usage:   "The elasticsearch or kibana URL",
+			EnvVars: []string{"ELKTOOLS_URL"},
 		}),
-		altsrc.NewStringFlag(cli.StringFlag{
-			Name:   "user",
-			Usage:  "The  user",
-			EnvVar: "ELKTOOLS_USER",
+		altsrc.NewStringFlag(&cli.StringFlag{
+			Name:    "user",
+			Usage:   "The  user",
+			EnvVars: []string{"ELKTOOLS_USER"},
 		}),
-		altsrc.NewStringFlag(cli.StringFlag{
-			Name:   "password",
-			Usage:  "The password",
-			EnvVar: "ELKTOOLS_PASSWORD",
+		altsrc.NewStringFlag(&cli.StringFlag{
+			Name:    "password",
+			Usage:   "The password",
+			EnvVars: []string{"ELKTOOLS_PASSWORD"},
 		}),
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "self-signed-certificate",
 			Usage: "Disable the TLS certificate check",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "debug",
 			Usage: "Display debug output",
 		},
 	}
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		{
 			Name:     "check-connexion-elasticsearch",
 			Usage:    "Check the elasticsearch connexion",
@@ -66,11 +66,11 @@ func run(args []string) error {
 			Usage:    "Create or update lifecycle policy",
 			Category: "ILM policy actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-id",
 					Usage: "The lifecycle policy name",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-file",
 					Usage: "The full path of lifecycle policy file",
 				},
@@ -82,11 +82,11 @@ func run(args []string) error {
 			Usage:    "Save lifecycle policy on file",
 			Category: "ILM policy actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-id",
 					Usage: "The lifecycle policy name",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-file",
 					Usage: "The full path of lifecycle policy file",
 				},
@@ -98,7 +98,7 @@ func run(args []string) error {
 			Usage:    "Delete lifecycle policy",
 			Category: "ILM policy actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-id",
 					Usage: "The lifecycle policy name",
 				},
@@ -110,7 +110,7 @@ func run(args []string) error {
 			Usage:    "Save all lifecycle policies on folder provided",
 			Category: "ILM policy actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-base-path",
 					Usage: "The base path to save all lifecycle policy",
 					Value: "lifecycle_policy",
@@ -123,7 +123,7 @@ func run(args []string) error {
 			Usage:    "Create or update all lifecycle policies from folder provided",
 			Category: "ILM policy actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "lifecycle-policy-base-path",
 					Usage: "The base path to load all lifecycle policy",
 					Value: "lifecycle_policy",
@@ -136,7 +136,7 @@ func run(args []string) error {
 			Usage:    "Get the lifecycle policy on Elasticsearch index",
 			Category: "ILM policy actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "elasticsearch-index",
 					Usage: "The Elasticsearch index where you should to get lifecycle policy status",
 				},
@@ -148,11 +148,11 @@ func run(args []string) error {
 			Usage:    "Create or update indice template",
 			Category: "Indice template actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-template-id",
 					Usage: "The indice template name",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-template-file",
 					Usage: "The full path of indice template file",
 				},
@@ -164,7 +164,7 @@ func run(args []string) error {
 			Usage:    "Create or update all indice templates",
 			Category: "Indice template actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-template-path",
 					Usage: "The indice templates base path",
 				},
@@ -176,7 +176,7 @@ func run(args []string) error {
 			Usage:    "Delete indice template",
 			Category: "Indice template actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-template-id",
 					Usage: "The indice template ID to delete",
 				},
@@ -188,11 +188,11 @@ func run(args []string) error {
 			Usage:    "Save indice template on file",
 			Category: "Indice template actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-template-id",
 					Usage: "The indice template ID to save",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-template-file",
 					Usage: "The indice template file to store it",
 				},
@@ -204,11 +204,11 @@ func run(args []string) error {
 			Usage:    "Create new indice with settings",
 			Category: "Indice actions",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-name",
 					Usage: "The indice name to create",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "indice-setting-file",
 					Usage: "The indice setting file",
 				},
@@ -226,11 +226,11 @@ func run(args []string) error {
 			Usage:    "Export all dashboards and all references in ndjson file",
 			Category: "Kibana dashboard",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "file-path",
 					Usage: "The file path to export all dashboards",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "user-space",
 					Usage: "The Kibana user space where export dashboards",
 					Value: "default",
@@ -243,11 +243,11 @@ func run(args []string) error {
 			Usage:    "Import all dashboards and all references from ndjson file",
 			Category: "Kibana dashboard",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "file-path",
 					Usage: "The file path to load all dashboards",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "user-space",
 					Usage: "The Kibana user space where write dashboards",
 					Value: "default",
@@ -320,6 +320,57 @@ func run(args []string) error {
 			Usage:    "Start SLM service",
 			Category: "Downtime",
 			Action:   elktools_elasticsearch.StartSLMService,
+		},
+		{
+			Name:     "export-data",
+			Usage:    "Export data from query to file",
+			Category: "Export",
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:  "from",
+					Usage: "From time to export data",
+					Value: "now-24h",
+				},
+				&cli.StringFlag{
+					Name:  "to",
+					Usage: "To time to export data",
+					Value: "now",
+				},
+				&cli.StringFlag{
+					Name:  "date-field",
+					Usage: "The date field to range over",
+					Value: "@timestamp",
+				},
+				&cli.StringFlag{
+					Name:  "index",
+					Usage: "The index to export data",
+					Value: "_all",
+				},
+				&cli.StringFlag{
+					Name:  "query",
+					Usage: "To query to export data",
+				},
+				&cli.StringSliceFlag{
+					Name:  "fields",
+					Usage: "Fields to extracts",
+					Value: cli.NewStringSlice("log.original"),
+				},
+				&cli.StringFlag{
+					Name:  "separator",
+					Usage: "The separator to concatain field when extract multi fields",
+					Value: "|",
+				},
+				&cli.StringFlag{
+					Name:  "split-file-field",
+					Usage: "The field to use to split data into multi files",
+					Value: "host.name",
+				},
+				&cli.StringFlag{
+					Name:  "path",
+					Usage: "The root path to create extracted files",
+				},
+			},
+			Action: elktools_elasticsearch.ExportDataToFiles,
 		},
 	}
 

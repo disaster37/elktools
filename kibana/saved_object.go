@@ -7,7 +7,7 @@ import (
 	"github.com/disaster37/go-kibana-rest/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func exportDashboards(filePath string, userSpace string, kb *kibana.Client) error {

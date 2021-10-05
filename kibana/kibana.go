@@ -4,27 +4,27 @@ import (
 	"github.com/disaster37/go-kibana-rest/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 // Check the global parameter
 func manageKibanaGlobalParameters(c *cli.Context) (*kibana.Client, error) {
 
-	if c.GlobalString("url") == "" {
+	if c.String("url") == "" {
 		return nil, errors.New("You must set --url parameter")
 	}
 
-	log.Debug("Kibana URL: ", c.GlobalString("url"))
-	log.Debug("Kibana user: ", c.GlobalString("user"))
+	log.Debug("Kibana URL: ", c.String("url"))
+	log.Debug("Kibana user: ", c.String("user"))
 	log.Debug("Kibana password: XXX")
-	log.Debug("Disable verify SSL: ", c.GlobalString("self-signed-certificate"))
+	log.Debug("Disable verify SSL: ", c.String("self-signed-certificate"))
 
 	// Init kibana client
 	cfg := kibana.Config{
-		Address:          c.GlobalString("url"),
-		Username:         c.GlobalString("user"),
-		Password:         c.GlobalString("password"),
-		DisableVerifySSL: c.GlobalBool("self-signed-certificate"),
+		Address:          c.String("url"),
+		Username:         c.String("user"),
+		Password:         c.String("password"),
+		DisableVerifySSL: c.Bool("self-signed-certificate"),
 	}
 
 	kb, err := kibana.NewClient(cfg)

@@ -12,28 +12,28 @@ import (
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func manageElasticsearchGlobalParameters(c *cli.Context) (*elasticsearch.Client, error) {
 
-	if c.GlobalString("url") == "" {
+	if c.String("url") == "" {
 		return nil, errors.New("You must set --url parameter")
 	}
 
-	log.Debug("Elasticsearch URL: ", c.GlobalString("url"))
-	log.Debug("Elasticsearch user: ", c.GlobalString("user"))
+	log.Debug("Elasticsearch URL: ", c.String("url"))
+	log.Debug("Elasticsearch user: ", c.String("user"))
 	log.Debug("Elasticsearch password: XXX")
-	log.Debug("Disable verify SSL: ", c.GlobalBool("self-signed-certificate"))
+	log.Debug("Disable verify SSL: ", c.Bool("self-signed-certificate"))
 
 	// Init es client
-	elasticsearchURLs := strings.Split(c.GlobalString("url"), ",")
+	elasticsearchURLs := strings.Split(c.String("url"), ",")
 	cfg := elasticsearch.Config{
 		Addresses: elasticsearchURLs,
-		Username:  c.GlobalString("user"),
-		Password:  c.GlobalString("password"),
+		Username:  c.String("user"),
+		Password:  c.String("password"),
 	}
-	if c.GlobalBool("self-signed-certificate") == true {
+	if c.Bool("self-signed-certificate") == true {
 		cfg.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{
 				InsecureSkipVerify: true,
