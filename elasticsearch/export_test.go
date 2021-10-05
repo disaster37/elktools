@@ -9,7 +9,7 @@ import (
 func (s *ESTestSuite) TestExportDataToFiles() {
 
 	// Exports data without errors
-	err := exportDataToFiles("now-1000y", "now", "timestamp", "test", "*", []string{"message"}, "|", "node.name", "/tmp", s.client)
+	err := exportDataToFiles("now-1000y", "now", "timestamp", "logs", "*", []string{"message"}, "|", "node.name", "/tmp", s.client)
 	assert.NoError(s.T(), err)
 
 	// Check output file exists
