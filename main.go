@@ -355,11 +355,6 @@ func run(args []string) error {
 					Usage: "Fields to extracts",
 					Value: cli.NewStringSlice("log.original"),
 				},
-				&cli.StringSliceFlag{
-					Name:  "sort-fields",
-					Usage: "Sort fields to use",
-					Value: cli.NewStringSlice("@timestamp"),
-				},
 				&cli.StringFlag{
 					Name:  "separator",
 					Usage: "The separator to concatain field when extract multi fields",

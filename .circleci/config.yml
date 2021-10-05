@@ -28,7 +28,8 @@ jobs:
     steps:
       - checkout
       - run: until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://kb:5601); do sleep 5; done
-      - run: curl --fail -u elastic:changeme -H "Content-Type: application/x-ndjson" -XPOST http://es:9200/test/_bulk?pretty --data-binary @fixtures/logs/bulk.json
+      - run: |
+          curl --fail -u elastic:changeme -H "Content-Type: application/x-ndjson" -XPOST http://es:9200/test/_bulk?pretty --data-binary @fixtures/logs/bulk.json
       - run: make test
   build:
     docker:
