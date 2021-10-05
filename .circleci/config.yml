@@ -32,6 +32,7 @@ jobs:
           curl --fail -u elastic:changeme -H "Content-Type: application/x-ndjson" -XPOST http://es:9200/logs/_bulk?pretty --data-binary @fixtures/logs/bulk.json
           sleep 10
           curl --fail -u elastic:changeme http://es:9200/_cluster/health?wait_for_status=green&timeout=500s
+          curl --fail -u elastic:changeme http://es:9200/_cluster/health
       - run: make test
   build:
     docker:
