@@ -1,32 +1,5 @@
-{
-    "index": {}
-}
-{
-    "type": "server",
-    "timestamp": "2021-10-04T14:22:42,920Z",
-    "level": "INFO",
-    "component": "o.e.m.j.JvmGcMonitorService",
-    "cluster.name": "test",
-    "node": {
-        "name": "es-0"
-    },
-    "message": "[gc][17868238] overhead, spent [334ms] collecting in the last [1s]",
-    "cluster.uuid": "lxL42NatR6-7xNjjEAlVwQ",
-    "node.id": "Zd7gZQZkTuKtiU0MPpPGFA"
-}
-{
-    "index": {}
-}
-{
-    "type": "server",
-    "timestamp": "2021-10-04T14:23:09,033Z",
-    "level": "INFO",
-    "component": "o.e.m.j.JvmGcMonitorService",
-    "cluster.name": "test",
-    "node": {
-        "name": "es-1"
-    },
-    "message": "[gc][17868264] overhead, spent [279ms] collecting in the last [1s]",
-    "cluster.uuid": "lxL42NatR6-7xNjjEAlVwQ",
-    "node.id": "Zd7gZQZkTuKtiU0MPpPGFA"
-}
+
+{"index":{}}
+{"type":"server","timestamp":"2021-10-04T14:22:42,920Z","level":"INFO","component":"o.e.m.j.JvmGcMonitorService","cluster.name":"test","node":{"name":"es-0"},"message":"[gc][17868238] overhead, spent [334ms] collecting in the last [1s]","cluster.uuid":"lxL42NatR6-7xNjjEAlVwQ","node.id":"Zd7gZQZkTuKtiU0MPpPGFA"}
+{"index":{}}
+{"type":"server","timestamp":"2021-10-04T14:23:09,033Z","level":"INFO","component":"o.e.m.j.JvmGcMonitorService","cluster.name":"test","node":{"name":"es-1"},"message":"[gc][17868264] overhead, spent [279ms] collecting in the last [1s]","cluster.uuid":"lxL42NatR6-7xNjjEAlVwQ","node.id":"Zd7gZQZkTuKtiU0MPpPGFA"}
