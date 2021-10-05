@@ -12,6 +12,7 @@ import (
 	"github.com/olivere/elastic/v7"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v2"
 )
 
@@ -138,19 +139,15 @@ func exportDataToFiles(fromDate string, toDate string, dateField string, index s
 
 	// Loop over results
 	if searchResult.TotalHits() > 0 {
-		var data map[string]interface{}
 		listFiles := make(map[string]*os.File, 0)
 
 		for _, item := range searchResult.Hits.Hits {
 			log.Debugf("Item %s", item.Source)
 
 			// Create target file to write result
-			err := json.Unmarshal(item.Source, &data)
-			if err != nil {
-				return err
-			}
+			jsonResult := gjson.ParseBytes(item.Source)
 
-			fileName := fmt.Sprintf("%s/%s", path, data[splitFileColumn])
+			fileName := fmt.Sprintf("%s/%s", path, jsonResult.Get(splitFileColumn))
 			file, ok := listFiles[fileName]
 			if !ok {
 				log.Infof("Create file %s", fileName)
@@ -164,7 +161,7 @@ func exportDataToFiles(fromDate string, toDate string, dateField string, index s
 			// Extract needed columns
 			td := make([]string, 0)
 			for _, field := range fields {
-				td = append(td, data[field].(string))
+				td = append(td, jsonResult.Get(field).Str)
 			}
 
 			// Write result
