@@ -5,20 +5,20 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/golang:1.16
+      - image: circleci/golang:1.17
         environment:
           ELASTICSEARCH_URL: "http://es:9200"
           ELASTICSEARCH_USERNAME: "elastic"
           ELASTICSEARCH_PASSWORD: "changeme"
           KIBANA_URL: http://kb:5601
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
         name: es
         environment:
           cluster.name: test
           discovery.type: single-node
           ELASTIC_PASSWORD: changeme
           xpack.security.enabled: "true"
-      - image: docker.elastic.co/kibana/kibana:7.5.1
+      - image: docker.elastic.co/kibana/kibana:7.16.2
         name: kb
         environment:
           ELASTICSEARCH_HOSTS: http://es:9200
@@ -36,7 +36,7 @@ jobs:
       - run: make test
   build:
     docker:
-      - image: circleci/golang:1.16
+      - image: circleci/golang:1.17
         environment:
           GO111MODULE: "on"
     working_directory: /go/src/github.com/disaster37/elktools
@@ -45,7 +45,7 @@ jobs:
       - run: go build
   release:
     docker:
-      - image: circleci/golang:1.16
+      - image: circleci/golang:1.17
         environment:
           GITHUB_TOKEN: $GITHUB_TOKEN
           CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME
