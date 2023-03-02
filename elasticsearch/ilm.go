@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/disaster37/elktools/v7/helper"
-	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/disaster37/elktools/v8/helper"
+	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"

@@ -1,7 +1,7 @@
 package elktools_kibana
 
 import (
-	"github.com/disaster37/go-kibana-rest/v7"
+	"github.com/disaster37/go-kibana-rest/v8"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"

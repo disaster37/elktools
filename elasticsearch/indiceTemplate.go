@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/disaster37/elktools/v7/helper"
-	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/disaster37/elktools/v8/helper"
+	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
@@ -174,7 +174,7 @@ func DeleteIndiceTemplate(c *cli.Context) error {
 
 }
 
-//deleteIndiceTemplate permit to delete indice template
+// deleteIndiceTemplate permit to delete indice template
 func deleteIndiceTemplate(id string, es *elasticsearch.Client) (string, error) {
 	if id == "" {
 		return "", errors.New("You must the id")

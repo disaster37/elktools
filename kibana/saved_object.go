@@ -3,8 +3,8 @@ package elktools_kibana
 import (
 	"io/ioutil"
 
-	"github.com/disaster37/elktools/v7/helper"
-	"github.com/disaster37/go-kibana-rest/v7"
+	"github.com/disaster37/elktools/v8/helper"
+	"github.com/disaster37/go-kibana-rest/v8"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
