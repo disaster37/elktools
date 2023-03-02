@@ -63,7 +63,7 @@ jobs:
       - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG dist/
 workflows:
   version: 2
-  build-workflow:
+  build-workflow:cd "v0.5.1"
     jobs:
       - test:
           filters:

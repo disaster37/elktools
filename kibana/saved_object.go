@@ -1,7 +1,7 @@
 package elktools_kibana
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/disaster37/elktools/v8/helper"
 	"github.com/disaster37/go-kibana-rest/v8"
@@ -78,7 +78,7 @@ func importDashboards(filePath string, userSpace string, kb *kibana.Client) erro
 	log.Debug("UserSpace: ", userSpace)
 
 	// Read file that contain all dashboard ans reference
-	b, err := ioutil.ReadFile(filePath)
+	b, err := os.ReadFile(filePath)
 	if err != nil {
 		return err
 	}

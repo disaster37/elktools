@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 	"time"
@@ -160,7 +160,7 @@ func exportDataToFiles(fromDate string, toDate string, dateField string, index s
 	if res.IsError() {
 		return errors.Errorf("Error when extract data: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func exportDataToFiles(fromDate string, toDate string, dateField string, index s
 			if res.IsError() {
 				return errors.Errorf("Error when extract data: %s", res.String())
 			}
-			body, err := ioutil.ReadAll(res.Body)
+			body, err := io.ReadAll(res.Body)
 			if err != nil {
 				return err
 			}
@@ -245,11 +245,12 @@ func processExport(searchResult *elastic.SearchResult, fields []string, separato
 				}
 				log.Debugf("Open file %s", fileName)
 				file, err = os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-				defer file.Close()
 				if err != nil {
 					log.Errorf("Error when open file: %s", err.Error())
 					return err
 				}
+				defer file.Close()
+
 				listFiles[fileName] = file
 			}
 			// Extract needed columns

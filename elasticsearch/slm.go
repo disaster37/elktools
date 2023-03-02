@@ -2,7 +2,7 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/pkg/errors"
@@ -62,7 +62,7 @@ func stopSLMService(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when stop SLM service: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func startSLMService(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when start SLM service: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}

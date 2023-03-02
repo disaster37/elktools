@@ -2,7 +2,8 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
+	"os"
 	"strings"
 
 	"github.com/elastic/go-elasticsearch/v8"
@@ -56,7 +57,7 @@ func createIndice(name string, file string, es *elasticsearch.Client) (string, e
 	log.Debug("file: ", file)
 
 	// Read the settings file
-	b, err := ioutil.ReadFile(file)
+	b, err := os.ReadFile(file)
 	if err != nil {
 		return "", err
 	}
@@ -79,7 +80,7 @@ func createIndice(name string, file string, es *elasticsearch.Client) (string, e
 	if res.IsError() {
 		return "", errors.Errorf("Error when create indice %s: %s", name, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}

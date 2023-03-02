@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -33,7 +33,7 @@ func manageElasticsearchGlobalParameters(c *cli.Context) (*elasticsearch.Client,
 		Username:  c.String("user"),
 		Password:  c.String("password"),
 	}
-	if c.Bool("self-signed-certificate") == true {
+	if c.Bool("self-signed-certificate") {
 		cfg.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{
 				InsecureSkipVerify: true,
@@ -84,7 +84,7 @@ func checkConnexion(es *elasticsearch.Client) (string, error) {
 	if res.IsError() {
 		return "", errors.Errorf("Error when check Elasticsearch connexion: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -134,7 +134,7 @@ func checkClusterStatus(es *elasticsearch.Client) (string, error) {
 	if res.IsError() {
 		return "", errors.Errorf("Error when check Elasticsearch status: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -229,7 +229,7 @@ func putClusterSettings(es *elasticsearch.Client, settings map[string]interface{
 	if res.IsError() {
 		return errors.Errorf("Error when set Elasticsearch cluster setting: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}

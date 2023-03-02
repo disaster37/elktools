@@ -1,7 +1,6 @@
 package helper
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -69,7 +68,7 @@ func LoadYaml(filePath string, data interface{}) error {
 
 	log.Debug("FilePath: ", filePath)
 
-	b, err := ioutil.ReadFile(filePath)
+	b, err := os.ReadFile(filePath)
 	if err != nil {
 		return err
 	}

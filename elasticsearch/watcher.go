@@ -2,7 +2,7 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/pkg/errors"
@@ -61,7 +61,7 @@ func stopWatcherService(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when stop watcher service: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -86,7 +86,7 @@ func startWatcherService(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when start watcher service: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,8 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
+	"os"
 	"strings"
 
 	"github.com/disaster37/elktools/v8/helper"
@@ -57,7 +58,7 @@ func createIndiceTemplate(id string, file string, es *elasticsearch.Client) (str
 	log.Debug("file: ", file)
 
 	// Read the template file
-	b, err := ioutil.ReadFile(file)
+	b, err := os.ReadFile(file)
 	if err != nil {
 		return "", err
 	}
@@ -80,7 +81,7 @@ func createIndiceTemplate(id string, file string, es *elasticsearch.Client) (str
 	if res.IsError() {
 		return "", errors.Errorf("Error when add template %s: %s", id, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -132,6 +133,9 @@ func createAllIndiceTemplates(path string, es *elasticsearch.Client) ([]string, 
 
 		// Extract the indice template name from the file name
 		match, err := helper.ExtractFromRegex("([^\\/]+)\\.json$", file)
+		if err != nil {
+			return nil, err
+		}
 		if match == nil {
 			return nil, errors.Errorf("Can't extract the indice template id from the file %s", file)
 		}
@@ -199,7 +203,7 @@ func deleteIndiceTemplate(id string, es *elasticsearch.Client) (string, error) {
 	if res.IsError() {
 		return "", errors.Errorf("Error when delete template %s: %s", id, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -268,7 +272,7 @@ func saveIndiceTemplate(id string, file string, es *elasticsearch.Client) (strin
 	if res.IsError() {
 		return "", errors.Errorf("Error when delete template %s: %s", id, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}

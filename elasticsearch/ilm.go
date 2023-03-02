@@ -3,7 +3,8 @@ package elktools_elasticsearch
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"os"
 	"strings"
 
 	"github.com/disaster37/elktools/v8/helper"
@@ -60,7 +61,7 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) (string, 
 	log.Debug("File: ", file)
 
 	// Read the policy file
-	b, err := ioutil.ReadFile(file)
+	b, err := os.ReadFile(file)
 	if err != nil {
 		return "", err
 	}
@@ -83,7 +84,7 @@ func createILMPolicy(id string, file string, es *elasticsearch.Client) (string, 
 	if res.IsError() {
 		return "", errors.Errorf("Error when add lifecycle policy %s: %s", id, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -152,7 +153,7 @@ func saveIlmPolicy(id string, file string, es *elasticsearch.Client) (string, er
 	if res.IsError() {
 		return "", errors.Errorf("Error when get lifecycle policy %s: %s", id, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -223,7 +224,7 @@ func deleteILMPolicy(id string, es *elasticsearch.Client) (string, error) {
 	if res.IsError() {
 		return "", errors.Errorf("Error when delete lifecycle policy %s: %s", id, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -281,7 +282,7 @@ func saveAllILMPolicies(path string, es *elasticsearch.Client) (map[string]inter
 	if res.IsError() {
 		return nil, errors.Errorf("Error when get all lifecycle policies: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	log.Debugf("Get all life cycle policies successfully:\n%s", body)
 	if err != nil {
 		return nil, err
@@ -361,6 +362,9 @@ func createAllILMPolicies(path string, es *elasticsearch.Client) ([]string, erro
 
 		// Extract the policy name from the file name
 		match, err := helper.ExtractFromRegex("([^\\/]+)\\.json$", file)
+		if err != nil {
+			return nil, err
+		}
 		if match == nil {
 			return nil, errors.Errorf("Can't extract the lifecycle policy id from the file %s", file)
 		}
@@ -418,13 +422,16 @@ func getStatusILMPOlicy(index string, es *elasticsearch.Client) (string, error) 
 		es.API.ILM.ExplainLifecycle.WithContext(context.Background()),
 		es.API.ILM.ExplainLifecycle.WithPretty(),
 	)
+	if err != nil {
+		return "", err
+	}
 
 	defer res.Body.Close()
 
 	if res.IsError() {
 		return "", errors.Errorf("Error when get lifecycle policy status on index %s: %s", index, res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -448,7 +455,7 @@ func startILMService(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when start ILM service: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -473,7 +480,7 @@ func stopILMService(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when stop ILM service: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}

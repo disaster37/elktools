@@ -2,7 +2,7 @@ package elktools_elasticsearch
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/pkg/errors"
@@ -62,7 +62,7 @@ func enableMlUpgradeMode(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when enable ML upgrade mode: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func disableMlUpgradeMode(es *elasticsearch.Client) error {
 	if res.IsError() {
 		return errors.Errorf("Error when enable ML upgrade mode: %s", res.String())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,7 +12,7 @@ func TestWriteFile(t *testing.T) {
 	err := WriteFile("/tmp/test", []byte("test"))
 	assert.NoError(t, err)
 
-	b, err := ioutil.ReadFile("/tmp/test")
+	b, err := os.ReadFile("/tmp/test")
 	assert.NoError(t, err)
 	assert.Equal(t, "test", string(b))
 }
