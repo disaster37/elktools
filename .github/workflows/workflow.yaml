@@ -37,9 +37,9 @@ jobs:
       run: |
         set -e
         docker-compose up &
-        until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://localhost:9200); do sleep 5; done
+        until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://localhost:9200); do echo "wait elastic" && sleep 5; done
         curl -XPOST -u elastic:changeme http://localhost:9200/_license/start_trial?acknowledge=true
-        until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://localhost:5601); do sleep 5; done
+        until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://localhost:5601); do echo "wait kibana" && sleep 5; done
         curl --fail -u elastic:changeme -H "Content-Type: application/json" -XPUT http://localhost:9200/logs -d '{"settings": {"number_of_replicas": 0, "number_of_shards": 1}}'
         curl --fail -u elastic:changeme -H "Content-Type: application/x-ndjson" -XPOST http://localhost:9200/logs/_bulk?pretty --data-binary @fixtures/logs/bulk.ndjson
         curl --fail -XGET -u elastic:changeme "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=500s"
