@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"sort"
 
@@ -10,6 +11,11 @@ import (
 	"github.com/urfave/cli/v2"
 	"github.com/urfave/cli/v2/altsrc"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
+)
+
+var (
+	version string
+	commit  string
 )
 
 func run(args []string) error {
@@ -24,7 +30,7 @@ func run(args []string) error {
 	// CLI settings
 	app := cli.NewApp()
 	app.Usage = "Manage ELK on cli interface"
-	app.Version = "develop"
+	app.Version = fmt.Sprintf("%s-%s", version, commit)
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
 			Name:  "config",

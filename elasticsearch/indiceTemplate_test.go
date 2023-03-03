@@ -7,7 +7,7 @@ import (
 func (s *ESTestSuite) TestCreateIndiceTemplate() {
 
 	// Create indice template
-	_, err := createIndiceTemplate("test", "../fixtures/template/template.json", s.client)
+	_, err := createIndiceTemplate("template", "../fixtures/template/template.json", s.client)
 	assert.NoError(s.T(), err)
 
 	// Create all indice templates
