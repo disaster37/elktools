@@ -15,7 +15,7 @@ func (s *ESTestSuite) TestCreateIndiceTemplate() {
 	assert.NoError(s.T(), err)
 
 	// Save indice template
-	_, err = saveIndiceTemplate("test", "/tmp/test.json", s.client)
+	_, err = saveIndiceTemplate("template", "/tmp/test.json", s.client)
 	assert.NoError(s.T(), err)
 
 	// Delete indice template
