@@ -46,6 +46,11 @@ jobs:
         curl --fail -XGET -u elastic:changeme "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=500s"
     - name: Run test
       run: make test
+    - uses: codecov/codecov-action@v2
+      with:
+        files: coverage.txt
+        flags: unittests
+        fail_ci_if_error: true
 
   release:
     needs: [build] # Only run this workflow when "build" workflow succeeds

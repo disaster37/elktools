@@ -1,6 +1,10 @@
 {
-    "settings": {
+  "index_patterns": ["test-*"],
+  "priority": 100,
+  
+  "template": {
+      "settings": {
         "index.refresh_interval": "5s"
-    },
-  "template": "test-*"
+      }
+  }
 }
