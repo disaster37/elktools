@@ -39,6 +39,7 @@ jobs:
         docker-compose up &
         until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://localhost:9200); do echo "wait elastic" && sleep 5; done
         curl -XPOST -u elastic:changeme http://localhost:9200/_license/start_trial?acknowledge=true
+        curl -s -X POST -u "elastic:changeme" -H "Content-Type: application/json" http://localhost:9200/_security/user/kibana_system/_password -d "{\"password\":\"changeme\"}"
         until $(curl --output /dev/null --silent --head --fail -u elastic:changeme http://localhost:5601); do echo "wait kibana" && sleep 5; done
         curl --fail -u elastic:changeme -H "Content-Type: application/json" -XPUT http://localhost:9200/logs -d '{"settings": {"number_of_replicas": 0, "number_of_shards": 1}}'
         curl --fail -u elastic:changeme -H "Content-Type: application/x-ndjson" -XPOST http://localhost:9200/logs/_bulk?pretty --data-binary @fixtures/logs/bulk.ndjson
