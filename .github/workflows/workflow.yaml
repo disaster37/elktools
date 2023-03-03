@@ -96,7 +96,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.name }}
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      - name: Login to DockerHub
+      - name: Login to Quay
         uses: docker/login-action@v2
         with:
           registry: quay.io
@@ -124,6 +124,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            version={{GITHUB_REF##*/}}
-            commit={{GITHUB_SHA::8}}
-            test={{version}}
+            version=${{GITHUB_REF##*/}}
+            commit=${{GITHUB_SHA::8}}
+            test=${{version}}

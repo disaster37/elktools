@@ -4,6 +4,7 @@ A cli tools to help manage ELK
 ## Contribute
 
 You PR are always welcome. Please use the righ branch to do PR:
+ - 8.x for Elasticsearch 7.x
  - 7.x for Elasticsearch 7.x
  - 6.x for Elasticsearch 6.x
 Don't forget to add test if you add some functionalities.
@@ -172,13 +173,13 @@ You need to set the following parameters:
 Sample of indice template call `sample-indice-template.json`:
 ```json
 {
-  "index_patterns": [
-    "logstash-*"
-  ],
-  "order": 2,
-  "settings": {
-    "index.lifecycle.name": "policy-logstash-log",
-    "index.refresh_interval": "5s"
+  "index_patterns": ["logstash-*"],
+  "priority": 100,
+  
+  "template": {
+      "settings": {
+        "index.refresh_interval": "5s"
+      }
   }
 }
 ```
