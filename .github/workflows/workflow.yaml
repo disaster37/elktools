@@ -124,6 +124,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            version=${{GITHUB_REF##*/}}
             commit=${{GITHUB_SHA::8}}
             test=${{version}}
