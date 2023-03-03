@@ -1,6 +1,14 @@
 # elktools
 A cli tools to help manage ELK
 
+## Install
+
+### From release
+You can download the elktools from [release](https://github.com/disaster37/elktools/releases)
+
+### From docker registry
+You can get from docker registry: `quay.io/webcenter/elktools:<tag_name>` or `quay.io/webcenter/elktools:8.x`
+
 ## Contribute
 
 You PR are always welcome. Please use the righ branch to do PR:
