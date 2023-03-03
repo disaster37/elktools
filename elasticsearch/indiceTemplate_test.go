@@ -19,7 +19,7 @@ func (s *ESTestSuite) TestCreateIndiceTemplate() {
 	assert.NoError(s.T(), err)
 
 	// Delete indice template
-	_, err = deleteIndiceTemplate("test", s.client)
+	_, err = deleteIndiceTemplate("template", s.client)
 	assert.NoError(s.T(), err)
 
 }
