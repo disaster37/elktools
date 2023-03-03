@@ -65,11 +65,11 @@ func createIndiceTemplate(id string, file string, es *elasticsearch.Client) (str
 	templateJson := string(b)
 	log.Debug("Template: ", templateJson)
 
-	res, err := es.API.Indices.PutTemplate(
+	res, err := es.API.Indices.PutIndexTemplate(
 		id,
 		strings.NewReader(templateJson),
-		es.API.Indices.PutTemplate.WithContext(context.Background()),
-		es.API.Indices.PutTemplate.WithPretty(),
+		es.API.Indices.PutIndexTemplate.WithContext(context.Background()),
+		es.API.Indices.PutIndexTemplate.WithPretty(),
 	)
 
 	if err != nil {
@@ -188,10 +188,10 @@ func deleteIndiceTemplate(id string, es *elasticsearch.Client) (string, error) {
 	}
 	log.Debug("ID: ", id)
 
-	res, err := es.API.Indices.DeleteTemplate(
+	res, err := es.API.Indices.DeleteIndexTemplate(
 		id,
-		es.API.Indices.DeleteTemplate.WithContext(context.Background()),
-		es.API.Indices.DeleteTemplate.WithPretty(),
+		es.API.Indices.DeleteIndexTemplate.WithContext(context.Background()),
+		es.API.Indices.DeleteIndexTemplate.WithPretty(),
 	)
 
 	if err != nil {
@@ -257,10 +257,10 @@ func saveIndiceTemplate(id string, file string, es *elasticsearch.Client) (strin
 	log.Debug("ID: ", id)
 	log.Debug("File: ", file)
 
-	res, err := es.API.Indices.GetTemplate(
-		es.API.Indices.GetTemplate.WithName(id),
-		es.API.Indices.GetTemplate.WithContext(context.Background()),
-		es.API.Indices.GetTemplate.WithPretty(),
+	res, err := es.API.Indices.GetIndexTemplate(
+		es.API.Indices.GetIndexTemplate.WithName(id),
+		es.API.Indices.GetIndexTemplate.WithContext(context.Background()),
+		es.API.Indices.GetIndexTemplate.WithPretty(),
 	)
 
 	if err != nil {
