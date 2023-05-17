@@ -262,6 +262,27 @@ func run(args []string) error {
 			Action: elktools_kibana.ImportDashboards,
 		},
 		{
+			Name:     "move-data-view",
+			Usage:    "Move data view on all dashboards ans sub objects",
+			Category: "Kibana dashboard",
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:  "current-data-view",
+					Usage: "The current data view",
+				},
+				&cli.StringFlag{
+					Name:  "target-data-view",
+					Usage: "The target data view",
+				},
+				&cli.StringFlag{
+					Name:  "user-space",
+					Usage: "The Kibana user space where write dashboards",
+					Value: "default",
+				},
+			},
+			Action: elktools_kibana.MoveDataView,
+		},
+		{
 			Name:     "check-elasticsearch-status",
 			Usage:    "Check the elasticsearch status",
 			Category: "Check",
