@@ -268,6 +268,37 @@ func run(args []string) error {
 			Action:   elktools_elasticsearch.CheckClusterStatus,
 		},
 		{
+			Name:     "check-node-online",
+			Usage:    "Check the node is online on Elasticsearch cluster",
+			Category: "Check",
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:     "node-name",
+					Usage:    "The node name",
+					Required: true,
+				},
+				&cli.StringSliceFlag{
+					Name:     "labels",
+					Usage:    "The labels to check the node name",
+					Required: false,
+				},
+			},
+			Action: elktools_elasticsearch.CheckNodeOnline,
+		},
+		{
+			Name:     "check-number-nodes",
+			Usage:    "Check there are a number of node in cluster",
+			Category: "Check",
+			Flags: []cli.Flag{
+				&cli.IntFlag{
+					Name:     "number-nodes",
+					Usage:    "The number of node expected",
+					Required: true,
+				},
+			},
+			Action: elktools_elasticsearch.CheckExpectedNumberNodes,
+		},
+		{
 			Name:     "disable-routing-allocation",
 			Usage:    "Disable routing allocation on Elasticsearch cluster",
 			Category: "Downtime",

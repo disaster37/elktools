@@ -1,25 +1,25 @@
 module github.com/disaster37/elktools/v8
 
-go 1.19
+go 1.20
 
 require (
 	github.com/disaster37/go-kibana-rest/v8 v8.5.0
-	github.com/elastic/go-elasticsearch/v8 v8.6.0
+	github.com/elastic/go-elasticsearch/v8 v8.10.0
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.9.0
-	github.com/stretchr/testify v1.8.2
-	github.com/tidwall/gjson v1.14.4
-	github.com/urfave/cli/v2 v2.24.4
+	github.com/sirupsen/logrus v1.9.3
+	github.com/stretchr/testify v1.8.4
+	github.com/tidwall/gjson v1.16.0
+	github.com/urfave/cli/v2 v2.25.7
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
-	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
+	github.com/elastic/elastic-transport-go/v8 v8.0.0-20230329154755-1a3c63de0db6 // indirect
 	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
