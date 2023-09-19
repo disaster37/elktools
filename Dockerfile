@@ -23,4 +23,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -ldflags "-s -w -X main.ve
 FROM alpine:latest
 WORKDIR /
 COPY --from=builder /workspace/elktools /usr/local/bin/
+RUN \
+    apk --update add bash &&\
+    rm -rf /var/cache/apk/*
 USER 65532:65532
